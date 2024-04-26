@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import 'package:csv/csv.dart' as csv;
+
 class StudentPunchLogScreen extends StatelessWidget {
   final AcademyRepository academyRepository;
   final String name;
@@ -15,9 +16,9 @@ class StudentPunchLogScreen extends StatelessWidget {
 
   const StudentPunchLogScreen(
       {super.key,
-        required this.academyRepository,
-        required this.name,
-        required this.parentPhone});
+      required this.academyRepository,
+      required this.name,
+      required this.parentPhone});
 
   @override
   Widget build(BuildContext context) {
@@ -40,30 +41,18 @@ class StudentPunchLogScreen extends StatelessWidget {
               SliverAppBar(
                 centerTitle: true,
                 title: Text('$name 학생 등하원 기록',
-                    style: TextStyle(color: Colors.white, fontSize: 35)),
+                    style: const TextStyle(color: Colors.white, fontSize: 35)),
                 backgroundColor: appBarColor,
                 floating: true,
                 pinned: false,
                 // Enable pinning
                 expandedHeight: 120.0,
                 // Adjust height as needed
-                flexibleSpace: FlexibleSpaceBar(
+                flexibleSpace: const FlexibleSpaceBar(
                   stretchModes: [StretchMode.fadeTitle],
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     Text('이름', style: TextStyle(fontSize: 12)),
-                      //     const SizedBox(width: 40),
-                      //     Text('날짜', style: TextStyle(fontSize: 12)),
-                      //     const SizedBox(width: 40),
-                      //     Text('시간', style: TextStyle(fontSize: 12)),
-                      //     const SizedBox(width: 40),
-                      //     Text('등하원 정보', style: TextStyle(fontSize: 12)),
-                      //   ],
-                      // ),
                       SizedBox(
                         height: 10,
                       ),
@@ -73,27 +62,31 @@ class StudentPunchLogScreen extends StatelessWidget {
               ),
               SliverFixedExtentList(
                 itemExtent: 40.0,
-                delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
+                delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    child:  Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('이름', style: TextStyle(fontSize: 20)),
-
-                            Text('날짜', style: TextStyle(fontSize: 20)),
-
-                            Text('시간', style: TextStyle(fontSize: 20)),
-
-                            Text('등하원 정보', style: TextStyle(fontSize: 20)),
-                          ],
-                        ),
                         SizedBox(
-                          height: 10,
+                          width: 25,
+                        ),
+                        Text('이름', style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          width: 75,
+                        ),
+                        Text('날짜', style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          width: 85,
+                        ),
+                        Text('시간', style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          width: 40,
+                        ),
+                        Text('등하원', style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          width: 15,
                         ),
                       ],
                     ),
@@ -102,30 +95,27 @@ class StudentPunchLogScreen extends StatelessWidget {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (context, index) {
+                  (context, index) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Divider(
+                        const Divider(
                           color: Colors.grey,
                         ),
                         Column(children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('${snapshot.data![index].name}',
-                                  style: TextStyle(fontSize: 20)),
-                              // const SizedBox(width: 30),
+                              Text(snapshot.data![index].name,
+                                  style: const TextStyle(fontSize: 20)),
                               Text(
-                                  '${snapshot.data![index].time.toString().substring(0, 10)}',
-                                  style: TextStyle(fontSize: 20)),
-                              // const SizedBox(width: 30),
+                                  snapshot.data![index].time.toString().substring(0, 10),
+                                  style: const TextStyle(fontSize: 20)),
                               Text(
-                                  '${snapshot.data![index].time.toString().substring(11, 22)}',
-                                  style: TextStyle(fontSize: 20)),
-                              // const SizedBox(width: 30),
-                              Text('${snapshot.data![index].punchType}',
-                                  style: TextStyle(fontSize: 20)),
+                                  snapshot.data![index].time.toString().substring(11, 22),
+                                  style: const TextStyle(fontSize: 20)),
+                              Text(snapshot.data![index].punchType,
+                                  style: const TextStyle(fontSize: 20)),
                             ],
                           ),
                         ])
@@ -140,12 +130,17 @@ class StudentPunchLogScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
+        onPressed: () async {
           String fileName = '${logList[0].name}등하원 내역.csv';
 
           List<List<dynamic>> csvData = [
-            ['이름', '날짜','시간', '등하원'],
-            ...logList.map((e) => [e.name,e.time.toString().substring(0, 10), e.time.toString().substring(11, 22),e.punchType]), // 기존 리스트 데이터 추가
+            ['이름', '날짜', '시간', '등하원'],
+            ...logList.map((e) => [
+                  e.name,
+                  e.time.toString().substring(0, 10),
+                  e.time.toString().substring(11, 22),
+                  e.punchType
+                ]), // 기존 리스트 데이터 추가
           ];
 
           String csvString = const csv.ListToCsvConverter().convert(csvData);
@@ -162,12 +157,12 @@ class StudentPunchLogScreen extends StatelessWidget {
           await file.writeAsString(csvString, encoding: utf8);
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('CSV 파일다운로드 완료'),
             ),
           );
         },
-        child: Icon(
+        child: const Icon(
           Icons.file_download,
           color: Colors.white,
         ),
