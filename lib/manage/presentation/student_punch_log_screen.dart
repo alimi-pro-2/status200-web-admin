@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import '../domain/model/personal_punch_log.dart';
 import '../domain/repository/academy_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import 'package:csv/csv.dart' as csv;
 class StudentPunchLogScreen extends StatelessWidget {
   final AcademyRepository academyRepository;
   final String name;
@@ -18,7 +22,7 @@ class StudentPunchLogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color appBarColor = HexColor("#353A3F");
-
+    List<PersonalPunchLog> logList = [];
     return Scaffold(
       body: FutureBuilder<List<PersonalPunchLog>>(
         future: academyRepository.getStudentPunchLogs(name, parentPhone),
@@ -30,7 +34,7 @@ class StudentPunchLogScreen extends StatelessWidget {
           if (!snapshot.hasData) {
             return const Center(child: Text('값 없음'));
           }
-
+          logList = snapshot.data!;
           return CustomScrollView(
             slivers: [
               SliverAppBar(
@@ -136,7 +140,33 @@ class StudentPunchLogScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async{
+          String fileName = '${logList[0].name}등하원 내역.csv';
+
+          List<List<dynamic>> csvData = [
+            ['이름', '날짜','시간', '등하원'],
+            ...logList.map((e) => [e.name,e.time.toString().substring(0, 10), e.time.toString().substring(11, 22),e.punchType]), // 기존 리스트 데이터 추가
+          ];
+
+          String csvString = const csv.ListToCsvConverter().convert(csvData);
+
+          String directoryPath = '/storage/emulated/0/Download';
+          Directory directory = Directory(directoryPath);
+          if (!directory.existsSync()) {
+            directory.createSync(recursive: true);
+          }
+
+          String filePath = '$directoryPath/$fileName';
+
+          File file = File(filePath);
+          await file.writeAsString(csvString, encoding: utf8);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('CSV 파일다운로드 완료'),
+            ),
+          );
+        },
         child: Icon(
           Icons.file_download,
           color: Colors.white,
