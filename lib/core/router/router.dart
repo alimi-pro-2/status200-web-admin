@@ -11,22 +11,20 @@ import 'package:provider/provider.dart';
 
 final db = FirebaseFirestore.instance..useFirestoreEmulator('10.0.2.2', 8080);
 
-final router = GoRouter(
-    initialLocation: '/studentList',
-    routes: [
-      GoRoute(
-        path: '/studentList',
-        builder: (context, state) {
-          final AcademyRepository repo = AcademyRepositoryImpl(
-              academyDataSource: AcademyDataSource(firebaseFireStore: db));
-          return ChangeNotifierProvider(
-            create: (context) {
-              return AcademyStudentListViewModel(
-                  academyUseCase: GetAcademyUseCase(academyRepository: repo),
-                  studentsUseCase: GetStudentsUseCase(academyRepository: repo));
-            },
-            child: const AcademyStudentListScreen(),
-          );
+final router = GoRouter(initialLocation: '/', routes: [
+  GoRoute(
+    path: '/',
+    builder: (context, state) {
+      final AcademyRepository repo = AcademyRepositoryImpl(
+          academyDataSource: AcademyDataSource(firebaseFireStore: db));
+      return ChangeNotifierProvider(
+        create: (context) {
+          return AcademyStudentListViewModel(
+              academyUseCase: GetAcademyUseCase(academyRepository: repo),
+              studentsUseCase: GetStudentsUseCase(academyRepository: repo));
         },
-      ),
-    ]);}
+        child: const AcademyStudentListScreen(),
+      );
+    },
+  ),
+]);

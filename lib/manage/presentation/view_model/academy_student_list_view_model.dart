@@ -25,9 +25,19 @@ class AcademyStudentListViewModel with ChangeNotifier {
     _academy = academy;
     notifyListeners();
   }
+
   Future<void> setStudents(String uid) async {
     final students = await _studentsUseCase.getStudents(uid);
     _students = students;
+    notifyListeners();
+  }
+
+  void sortStudents(bool isNameAscending) {
+    if (isNameAscending) {
+      _students.sort((a, b) => a.name.compareTo(b.name));
+    } else {
+      _students.sort((a, b) => b.name.compareTo(a.name));
+    }
     notifyListeners();
   }
 
