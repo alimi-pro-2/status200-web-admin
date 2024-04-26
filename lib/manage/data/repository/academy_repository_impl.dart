@@ -4,7 +4,7 @@ import 'package:alimipro_mock_data/manage/domain/repository/academy_repository.d
 
 import '../data_source/academy_data_source.dart';
 
-class FirebaseAcademyRepositoryImpl implements AcademyRepository {
+class AcademyRepositoryImpl implements AcademyRepository {
   final AcademyDataSource _academyDataSource;
 
   @override
@@ -31,7 +31,7 @@ class FirebaseAcademyRepositoryImpl implements AcademyRepository {
     return studentsSnapshot.docs.map((e) => Student.fromJson(e.data())).toList();
   }
 
-  const FirebaseAcademyRepositoryImpl({
+  const AcademyRepositoryImpl({
     required AcademyDataSource academyDataSource,
   }) : _academyDataSource = academyDataSource;
 }
