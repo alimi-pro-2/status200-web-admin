@@ -4,9 +4,7 @@ import 'package:alimipro_mock_data/manage/domain/model/student.dart';
 
 // TODO: CRUD
 abstract interface class AcademyRepository {
-  /*Stream<Academy> get academyStream;*/
 
   Future<Academy> getAcademy(String uid);
   Future<List<Student>> getStudents(String uid);
-  Future<List<PersonalPunchLog>> getStudentPunchLogs(String name, String pin);
 }

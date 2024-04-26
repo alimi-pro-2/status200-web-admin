@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
-import 'manage/data/repository/firebase_academy_repository_impl.dart';
+import 'manage/data/repository/academy_repository_impl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
