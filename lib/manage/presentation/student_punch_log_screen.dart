@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import 'package:csv/csv.dart' as csv;
+
 class StudentPunchLogScreen extends StatelessWidget {
   final AcademyRepository academyRepository;
   final String name;
@@ -15,9 +16,9 @@ class StudentPunchLogScreen extends StatelessWidget {
 
   const StudentPunchLogScreen(
       {super.key,
-        required this.academyRepository,
-        required this.name,
-        required this.parentPhone});
+      required this.academyRepository,
+      required this.name,
+      required this.parentPhone});
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +53,6 @@ class StudentPunchLogScreen extends StatelessWidget {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     Text('이름', style: TextStyle(fontSize: 12)),
-                      //     const SizedBox(width: 40),
-                      //     Text('날짜', style: TextStyle(fontSize: 12)),
-                      //     const SizedBox(width: 40),
-                      //     Text('시간', style: TextStyle(fontSize: 12)),
-                      //     const SizedBox(width: 40),
-                      //     Text('등하원 정보', style: TextStyle(fontSize: 12)),
-                      //   ],
-                      // ),
                       SizedBox(
                         height: 10,
                       ),
@@ -73,27 +62,31 @@ class StudentPunchLogScreen extends StatelessWidget {
               ),
               SliverFixedExtentList(
                 itemExtent: 40.0,
-                delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
+                delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    child:  Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('이름', style: TextStyle(fontSize: 20)),
-
-                            Text('날짜', style: TextStyle(fontSize: 20)),
-
-                            Text('시간', style: TextStyle(fontSize: 20)),
-
-                            Text('등하원 정보', style: TextStyle(fontSize: 20)),
-                          ],
-                        ),
                         SizedBox(
-                          height: 10,
+                          width: 25,
+                        ),
+                        Text('이름', style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          width: 75,
+                        ),
+                        Text('날짜', style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          width: 85,
+                        ),
+                        Text('시간', style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          width: 40,
+                        ),
+                        Text('등하원', style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          width: 15,
                         ),
                       ],
                     ),
@@ -102,7 +95,7 @@ class StudentPunchLogScreen extends StatelessWidget {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (context, index) {
+                  (context, index) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -140,12 +133,17 @@ class StudentPunchLogScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
+        onPressed: () async {
           String fileName = '${logList[0].name}등하원 내역.csv';
 
           List<List<dynamic>> csvData = [
-            ['이름', '날짜','시간', '등하원'],
-            ...logList.map((e) => [e.name,e.time.toString().substring(0, 10), e.time.toString().substring(11, 22),e.punchType]), // 기존 리스트 데이터 추가
+            ['이름', '날짜', '시간', '등하원'],
+            ...logList.map((e) => [
+                  e.name,
+                  e.time.toString().substring(0, 10),
+                  e.time.toString().substring(11, 22),
+                  e.punchType
+                ]), // 기존 리스트 데이터 추가
           ];
 
           String csvString = const csv.ListToCsvConverter().convert(csvData);
