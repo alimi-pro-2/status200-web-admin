@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           academyDataSource: AcademyDataSource(firebaseFirestore: db),
           logDataSource: LogDataSource(firebaseFirestore: db),
         ),
-        uid: '2rkvZ4XPwqfVdIBmmBVPRm4sVcB3',
+        uid: '',
       ),
     );
   }
