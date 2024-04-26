@@ -1,5 +1,6 @@
 import 'package:alimipro_mock_data/manage/data/data_source/academy_data_source.dart';
 import 'package:alimipro_mock_data/manage/data/data_source/log_data_source.dart';
+import 'package:alimipro_mock_data/manage/presentation/academy_student_list_screen.dart';
 import 'package:alimipro_mock_data/manage/presentation/student_list_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,12 +37,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: StudentListScreen(
+      home: AcademyStudentListScreen(
         academyRepository: FirebaseAcademyRepositoryImpl(
           academyDataSource: AcademyDataSource(firebaseFirestore: db),
           logDataSource: LogDataSource(firebaseFirestore: db),
         ),
-        uid: '',
+        uid: '2rkvZ4XPwqfVdIBmmBVPRm4sVcB3',
       ),
     );
   }
