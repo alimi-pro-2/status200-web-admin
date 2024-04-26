@@ -1,17 +1,14 @@
 import 'package:alimipro_mock_data/manage/presentation/student_punch_log_screen.dart';
+import 'package:alimipro_mock_data/manage/presentation/view_model/academy_student_list_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../domain/model/academy.dart';
 import '../domain/model/student.dart';
-import '../domain/repository/academy_repository.dart';
 
 class AcademyStudentListScreen extends StatefulWidget {
-  final AcademyRepository academyRepository;
-  final String uid;
   const AcademyStudentListScreen({
     Key? key,
-    required this.academyRepository,
-    required this.uid,
   }) : super(key: key);
 
   @override
@@ -25,6 +22,7 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<AcademyStudentListViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('학생 명단'),
