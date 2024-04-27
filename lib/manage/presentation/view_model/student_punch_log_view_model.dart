@@ -8,11 +8,11 @@ class StudentPunchLogViewModel with ChangeNotifier {
 
   List<PersonalPunchLog> get punchLogs => List.unmodifiable(_punchLogs);
 
-  Future<void> setPunchLogs(
-    String name,
-    String parentPhone,
-    int pastFromToday,
-  ) async {
+  Future<void> setPunchLogs({
+    required String name,
+    required String parentPhone,
+    required int pastFromToday,
+  }) async {
     _punchLogs = await _personalPunchLogsUseCase.getPersonalPunchLogs(
         name, parentPhone, pastFromToday);
     notifyListeners();
