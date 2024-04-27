@@ -6,25 +6,12 @@ import '../../domain/model/student.dart';
 class AcademyDataSource {
   final FirebaseFirestore _firebaseFireStore;
 
-  AcademyDataSource({required FirebaseFirestore firebaseFireStore}) : _firebaseFireStore = firebaseFireStore;
+  AcademyDataSource({required FirebaseFirestore firebaseFireStore})
+      : _firebaseFireStore = firebaseFireStore;
 
   DocumentReference<Map<String, dynamic>> getAcademyDocumentRef(String uid) {
     final documentRef = _firebaseFireStore.collection('Academies').doc(uid);
 
     return documentRef;
   }
-
-  // Future<List<Student>> getStudents(String uid) async {
-  //   final snapshot = await _firebaseFireStore
-  //       .collection('Academies')
-  //       .doc(uid)
-  //       .collection('Students')
-  //       .get();
-  //
-  //   if (snapshot.docs.isEmpty) {
-  //     throw Exception('학생정보를 찾을 수 없습니다.');
-  //   }
-  //
-  //   return snapshot.docs.map((e) => Student.fromJson(e.data())).toList();
-  // }
 }

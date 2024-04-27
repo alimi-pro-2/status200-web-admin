@@ -16,17 +16,20 @@ class LogDataRepositoryImpl implements LogDataRepository {
     final DateTime aMonthAgo =
         DateTime.now().subtract(Duration(days: pastFromToday));
     final punchLogRef = _logDataSource.getPunchLogCollectionRef();
-    final querySnapshot = await punchLogRef.where('name', isEqualTo: name)
-      .where('parentsPhone', isEqualTo: changeNumber)
-      .where('time', isGreaterThan: Timestamp.fromDate(aMonthAgo))
-      .orderBy('time', descending: true)
-      .get();
+    final querySnapshot = await punchLogRef
+        .where('name', isEqualTo: name)
+        .where('parentsPhone', isEqualTo: changeNumber)
+        .where('time', isGreaterThan: Timestamp.fromDate(aMonthAgo))
+        .orderBy('time', descending: true)
+        .get();
 
     if (querySnapshot.docs.isEmpty) {
       throw Exception('등하원 기록이 없습니다.');
     }
 
-    return querySnapshot.docs.map((e) => PersonalPunchLog.fromJson(e.data())).toList();
+    return querySnapshot.docs
+        .map((e) => PersonalPunchLog.fromJson(e.data()))
+        .toList();
   }
 
   LogDataRepositoryImpl({

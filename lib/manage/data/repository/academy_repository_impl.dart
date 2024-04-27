@@ -28,7 +28,9 @@ class AcademyRepositoryImpl implements AcademyRepository {
       throw Exception('등록되지 않은 학원입니다.');
     }
 
-    return studentsSnapshot.docs.map((e) => Student.fromJson(e.data())).toList();
+    return studentsSnapshot.docs
+        .map((e) => Student.fromJson(e.data()))
+        .toList();
   }
 
   const AcademyRepositoryImpl({

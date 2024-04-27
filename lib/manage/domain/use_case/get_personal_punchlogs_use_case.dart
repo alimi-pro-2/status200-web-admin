@@ -9,7 +9,8 @@ class GetPersonalPunchLogsUseCase {
     String parentPhone,
     int pastFromToday,
   ) async {
-    final punchLogs = await _logDataRepository.getStudentsPunchLogs(name, parentPhone, pastFromToday);
+    final punchLogs = await _logDataRepository.getStudentsPunchLogs(
+        name, parentPhone, pastFromToday);
 
     return punchLogs;
   }

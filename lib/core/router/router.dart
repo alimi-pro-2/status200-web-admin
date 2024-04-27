@@ -49,7 +49,9 @@ final router = GoRouter(
                 personalPunchLogsUseCase:
                     GetPersonalPunchLogsUseCase(logDataRepository: repo));
           },
-          child: StudentPunchLogScreen(studentInfo: data,),
+          child: StudentPunchLogScreen(
+            studentInfo: data,
+          ),
         );
       },
     ),

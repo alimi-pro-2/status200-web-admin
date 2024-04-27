@@ -76,49 +76,49 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
                   ),
                   DataColumn(
                       label: Text(
-                        '반',
-                        style: TextStyle(color: textColor),
-                      )),
+                    '반',
+                    style: TextStyle(color: textColor),
+                  )),
                   DataColumn(
                       label: GestureDetector(
-                        child: Row(
-                          children: [
-                            Text(
-                              '이름 ',
-                              style: TextStyle(color: textColor),
-                            ),
-                            _isNameAscending
-                                ? Icon(
-                              Icons.arrow_drop_down,
-                              color: textColor,
-                            )
-                                : Icon(
-                              Icons.arrow_drop_up,
-                              color: textColor,
-                            ),
-                          ],
+                    child: Row(
+                      children: [
+                        Text(
+                          '이름 ',
+                          style: TextStyle(color: textColor),
                         ),
-                        onTap: () {
-                          _isNameAscending = !_isNameAscending;
-                          viewModel.sortStudents(_isNameAscending);
-                          setState(() {});
-                        },
-                      )),
+                        _isNameAscending
+                            ? Icon(
+                                Icons.arrow_drop_down,
+                                color: textColor,
+                              )
+                            : Icon(
+                                Icons.arrow_drop_up,
+                                color: textColor,
+                              ),
+                      ],
+                    ),
+                    onTap: () {
+                      _isNameAscending = !_isNameAscending;
+                      viewModel.sortStudents(_isNameAscending);
+                      setState(() {});
+                    },
+                  )),
                   DataColumn(
                       label: Text(
-                        '출결코드',
-                        style: TextStyle(color: textColor),
-                      )),
+                    '출결코드',
+                    style: TextStyle(color: textColor),
+                  )),
                   DataColumn(
                       label: Text(
-                        '대표 보호자 번호',
-                        style: TextStyle(color: textColor),
-                      )),
+                    '대표 보호자 번호',
+                    style: TextStyle(color: textColor),
+                  )),
                   DataColumn(
                       label: Text(
-                        '메모',
-                        style: TextStyle(color: textColor),
-                      )),
+                    '메모',
+                    style: TextStyle(color: textColor),
+                  )),
                 ],
                 rows: viewModel.students.map((student) {
                   return DataRow(
@@ -136,7 +136,8 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
                                 'parentPhone': student.parentsPhone1,
                               };
 
-                              context.push('/studentList/punchLogs', extra: data);
+                              context.push('/studentList/punchLogs',
+                                  extra: data);
                             },
                             child: Text(student.name),
                           ),
