@@ -25,7 +25,7 @@ class AcademyRepositoryImpl implements AcademyRepository {
     final studentsSnapshot = await documentRef.collection('Students').get();
 
     if (studentsSnapshot.docs.isEmpty) {
-      throw Exception('등록되지 않은 학원입니다.');
+      throw Exception('기록이 존재하지 않습니다.');
     }
 
     return studentsSnapshot.docs

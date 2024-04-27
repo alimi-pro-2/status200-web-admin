@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../domain/model/academy.dart';
-import '../../domain/model/student.dart';
-
 class AcademyDataSource {
   final FirebaseFirestore _firebaseFireStore;
 
