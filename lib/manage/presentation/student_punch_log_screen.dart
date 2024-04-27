@@ -69,101 +69,105 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
     final viewModel = context.watch<StudentPunchLogViewModel>();
 
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            centerTitle: true,
-            title: Text('${widget.studentInfo['name']} 학생 등하원 기록',
-                style: const TextStyle(color: Colors.white, fontSize: 35)),
-            backgroundColor: _appBarColor,
-            floating: true,
-            pinned: false,
-            // Enable pinning
-            expandedHeight: 120.0,
-            // Adjust height as needed
-            flexibleSpace: const FlexibleSpaceBar(
-              stretchModes: [StretchMode.fadeTitle],
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 10,
+      body: viewModel.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  centerTitle: true,
+                  title: Text('${widget.studentInfo['name']} 학생 등하원 기록',
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 35)),
+                  backgroundColor: _appBarColor,
+                  floating: true,
+                  pinned: false,
+                  // Enable pinning
+                  expandedHeight: 120.0,
+                  // Adjust height as needed
+                  flexibleSpace: const FlexibleSpaceBar(
+                    stretchModes: [StretchMode.fadeTitle],
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          SliverFixedExtentList(
-            itemExtent: 40.0,
-            delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
-              return Container(
-                alignment: Alignment.center,
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: 25,
-                    ),
-                    Text('이름', style: TextStyle(fontSize: 20)),
-                    SizedBox(
-                      width: 75,
-                    ),
-                    Text('날짜', style: TextStyle(fontSize: 20)),
-                    SizedBox(
-                      width: 85,
-                    ),
-                    Text('시간', style: TextStyle(fontSize: 20)),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Text('등하원', style: TextStyle(fontSize: 20)),
-                    SizedBox(
-                      width: 15,
-                    ),
-                  ],
                 ),
-              );
-            }, childCount: 1),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Divider(
-                      color: Colors.grey,
-                    ),
-                    Column(children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                SliverFixedExtentList(
+                  itemExtent: 40.0,
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(viewModel.punchLogs[index].name,
-                              style: const TextStyle(fontSize: 20)),
-                          Text(
-                              viewModel.punchLogs[index].time
-                                  .toString()
-                                  .substring(0, 10),
-                              style: const TextStyle(fontSize: 20)),
-                          Text(
-                              viewModel.punchLogs[index].time
-                                  .toString()
-                                  .substring(11, 22),
-                              style: const TextStyle(fontSize: 20)),
-                          Text(viewModel.punchLogs[index].punchType,
-                              style: const TextStyle(fontSize: 20)),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Text('이름', style: TextStyle(fontSize: 20)),
+                          SizedBox(
+                            width: 75,
+                          ),
+                          Text('날짜', style: TextStyle(fontSize: 20)),
+                          SizedBox(
+                            width: 85,
+                          ),
+                          Text('시간', style: TextStyle(fontSize: 20)),
+                          SizedBox(
+                            width: 40,
+                          ),
+                          Text('등하원', style: TextStyle(fontSize: 20)),
+                          SizedBox(
+                            width: 15,
+                          ),
                         ],
                       ),
-                    ])
-                  ],
-                );
-              },
-              childCount: viewModel.punchLogs.length,
+                    );
+                  }, childCount: 1),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Divider(
+                            color: Colors.grey,
+                          ),
+                          Column(children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(viewModel.punchLogs[index].name,
+                                    style: const TextStyle(fontSize: 20)),
+                                Text(
+                                    viewModel.punchLogs[index].time
+                                        .toString()
+                                        .substring(0, 10),
+                                    style: const TextStyle(fontSize: 20)),
+                                Text(
+                                    viewModel.punchLogs[index].time
+                                        .toString()
+                                        .substring(11, 22),
+                                    style: const TextStyle(fontSize: 20)),
+                                Text(viewModel.punchLogs[index].punchType,
+                                    style: const TextStyle(fontSize: 20)),
+                              ],
+                            ),
+                          ])
+                        ],
+                      );
+                    },
+                    childCount:
+                        viewModel.isLoading ? 1 : viewModel.punchLogs.length,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await exceldownload(logList);

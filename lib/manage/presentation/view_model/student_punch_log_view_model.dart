@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class StudentPunchLogViewModel with ChangeNotifier {
   List<PersonalPunchLog> _punchLogs = [];
   final GetPersonalPunchLogsUseCase _personalPunchLogsUseCase;
+  bool isLoading = false;
 
   List<PersonalPunchLog> get punchLogs => List.unmodifiable(_punchLogs);
 
@@ -13,8 +14,12 @@ class StudentPunchLogViewModel with ChangeNotifier {
     required String parentPhone,
     required int pastFromToday,
   }) async {
+    isLoading = true;
+    notifyListeners();
+
     _punchLogs = await _personalPunchLogsUseCase.getPersonalPunchLogs(
         name, parentPhone, pastFromToday);
+    isLoading = false;
     notifyListeners();
   }
 
