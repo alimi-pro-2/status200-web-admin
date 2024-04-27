@@ -1,11 +1,7 @@
-import 'package:alimipro_mock_data/manage/presentation/student_punch_log_screen.dart';
 import 'package:alimipro_mock_data/manage/presentation/view_model/academy_student_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import '../domain/model/academy.dart';
-import '../domain/model/student.dart';
 
 class AcademyStudentListScreen extends StatefulWidget {
   const AcademyStudentListScreen({
@@ -27,10 +23,10 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
     Future.microtask(() {
       context
           .read<AcademyStudentListViewModel>()
-          .setAcademy('2rkvZ4XPwqfVdIBmmBVPRm4sVcB3');
+          .setAcademy('');
       context
           .read<AcademyStudentListViewModel>()
-          .setStudents('2rkvZ4XPwqfVdIBmmBVPRm4sVcB3');
+          .setStudents('');
     });
   }
 
