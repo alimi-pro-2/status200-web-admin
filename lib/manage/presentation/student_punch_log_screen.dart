@@ -19,7 +19,7 @@ class StudentPunchLogScreen extends StatefulWidget {
 
 class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
   List<PersonalPunchLog> logList = [];
-  List<String> setList = ['15', '30', '60', 'All'];
+  List<String> setList = ['15', '30', '60'];
   String dropdownValue = '15';
 
   @override
@@ -31,7 +31,7 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
       context.read<StudentPunchLogViewModel>().setPunchLogs(
             name: widget.studentInfo['name'] ?? '',
             parentPhone: widget.studentInfo['parentPhone'] ?? '',
-            pastFromToday: 3000,
+            pastFromToday: int.parse(dropdownValue),
           );
     });
   }
@@ -118,6 +118,11 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                             setState(() {
                               dropdownValue = value!;
                             });
+                            viewModel.setPunchLogs(
+                                name: widget.studentInfo['name'] ?? '',
+                                parentPhone:
+                                    widget.studentInfo['parentPhone'] ?? '',
+                                pastFromToday: int.parse(dropdownValue));
                           },
                         ),
                         const SizedBox(width: 10),
