@@ -42,6 +42,9 @@ class ExcelDownload {
       }
     }
 
+
+
+
     final List<int>? file = await excel.encode();
     final Uint8List? bytes = file != null ? Uint8List.fromList(file) : null;
     if (kIsWeb) {
