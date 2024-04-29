@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 class StudentPunchLogViewModel with ChangeNotifier {
   List<PersonalPunchLog> _punchLogs = [];
   final GetPersonalPunchLogsUseCase _personalPunchLogsUseCase;
+  bool _hasError = false;
   bool isLoading = false;
 
   List<PersonalPunchLog> get punchLogs => List.unmodifiable(_punchLogs);
+  bool get hasError => _hasError;
 
   Future<void> setPunchLogs({
     required String name,
@@ -23,9 +25,11 @@ class StudentPunchLogViewModel with ChangeNotifier {
 
     switch (result) {
       case Success<List<PersonalPunchLog>, String>():
+        _hasError = false;
         _punchLogs = result.data.toList();
       case Error<List<PersonalPunchLog>, String>():
         _punchLogs = [];
+        _hasError = true;
     }
     isLoading = false;
     notifyListeners();
