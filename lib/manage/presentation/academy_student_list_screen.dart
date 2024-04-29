@@ -23,10 +23,10 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
     Future.microtask(() {
       context
           .read<AcademyStudentListViewModel>()
-          .setAcademy('2rkvZ4XPwqfVdIBmmBVPRm4sVcB3');
+          .setAcademy('0eC7zE8XXSFuH2ZzaHCc');
       context
           .read<AcademyStudentListViewModel>()
-          .setStudents('2rkvZ4XPwqfVdIBmmBVPRm4sVcB3');
+          .setStudents('0eC7zE8XXSFuH2ZzaHCc');
     });
   }
 

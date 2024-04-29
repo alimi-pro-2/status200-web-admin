@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:alimipro_mock_data/manage/presentation/view_model/student_punch_log_view_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import '../domain/model/personal_punch_log.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:csv/csv.dart' as csv;
 
 class StudentPunchLogScreen extends StatefulWidget {
@@ -17,7 +18,6 @@ class StudentPunchLogScreen extends StatefulWidget {
 }
 
 class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
-  final Color _appBarColor = HexColor("#353A3F");
   List<PersonalPunchLog> logList = [];
   List<String> setList = ['15', '30', '60', 'All'];
   String dropdownValue = '15';
@@ -31,7 +31,7 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
       context.read<StudentPunchLogViewModel>().setPunchLogs(
             name: widget.studentInfo['name'] ?? '',
             parentPhone: widget.studentInfo['parentPhone'] ?? '',
-            pastFromToday: 1200,
+            pastFromToday: 3000,
           );
     });
   }
@@ -95,19 +95,23 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                     floating: true,
                     expandedHeight: 0.0,
                     title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const Spacer(),
                         const Text(
                           '날짜 설정',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 20),
                         ),
+                        const SizedBox(width: 15),
                         DropdownButton(
                           value: dropdownValue,
                           items: setList
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(
+                                value,
+                                style: const TextStyle(fontSize: 20),
+                              ),
                             );
                           }).toList(),
                           onChanged: (String? value) {
@@ -117,15 +121,36 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                           },
                         ),
                         const SizedBox(width: 10),
-                        const Spacer(),
-                        const Text(
-                          'csv',
-                          style: TextStyle(fontSize: 16),
+                        GestureDetector(
+                          onTap: () async {
+                            await exceldownload(logList);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('CSV 파일다운로드 완료'),
+                              ),
+                            );
+                          },
+                          child: const Row(
+                            children: [
+                              Text(
+                                'csv',
+                                style: TextStyle(fontSize: 25),
+                              ),
+                              Icon(Icons.file_download),
+                            ],
+                          ),
                         ),
                         const SizedBox(width: 15),
-                        const Text(
-                          'excel',
-                          style: TextStyle(fontSize: 16),
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Row(children: [
+                            Text(
+                              'excel',
+                              style: TextStyle(fontSize: 25),
+                            ),
+                            Icon(Icons.file_download),
+                          ]),
                         ),
                       ],
                     ),
@@ -203,23 +228,6 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                   ),
                 ],
               ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await exceldownload(logList);
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('CSV 파일다운로드 완료'),
-              ),
-            );
-          },
-          backgroundColor: _appBarColor,
-          tooltip: '출결정보 다운로드',
-          child: const Icon(
-            Icons.file_download,
-            color: Colors.white,
-          ),
-        ),
       ),
     );
   }
