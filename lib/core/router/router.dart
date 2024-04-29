@@ -16,7 +16,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 //TODO: db 전역변수를 어떻게 할것인지
-final db = FirebaseFirestore.instance..useFirestoreEmulator('10.0.2.2', 8080);
+//final db = FirebaseFirestore.instance..useFirestoreEmulator('10.0.2.2', 8080);
+final db = FirebaseFirestore.instance..useFirestoreEmulator('localhost', 8080);
 
 final router = GoRouter(
   initialLocation: '/studentList',
