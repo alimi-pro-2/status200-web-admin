@@ -1,10 +1,7 @@
 import 'dart:io';
-
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
-
 import '../domain/model/personal_punch_log.dart';
-
 import 'dart:html' as html;
 import 'package:csv/csv.dart' as csv;
 
@@ -41,9 +38,6 @@ class ExcelDownload {
         cell.value = rowData[col];
       }
     }
-
-
-
 
     final List<int>? file = await excel.encode();
     final Uint8List? bytes = file != null ? Uint8List.fromList(file) : null;
