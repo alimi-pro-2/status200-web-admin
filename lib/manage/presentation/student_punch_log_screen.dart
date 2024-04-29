@@ -10,6 +10,8 @@ import 'package:hexcolor/hexcolor.dart';
 
 import 'package:csv/csv.dart' as csv;
 
+import 'excel_download.dart';
+
 class StudentPunchLogScreen extends StatefulWidget {
   final Map<String, String> studentInfo;
 
@@ -37,37 +39,10 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
     });
   }
 
-  Future<void> exceldownload(List<PersonalPunchLog> logs) async {
-    String fileName = '${widget.studentInfo['name']}등하원 내역.csv';
-
-    List<List<dynamic>> csvData = [
-      ['이름', '날짜', '시간', '등하원'],
-      ...logs.map((e) => [
-            e.name,
-            e.time.toString().substring(0, 10),
-            e.time.toString().substring(11, 22),
-            e.punchType
-          ]), // 기존 리스트 데이터 추가
-    ];
-
-    String csvString = const csv.ListToCsvConverter().convert(csvData);
-
-    String directoryPath = '/storage/emulated/0/Download';
-    Directory directory = Directory(directoryPath);
-    if (!directory.existsSync()) {
-      directory.createSync(recursive: true);
-    }
-
-    String filePath = '$directoryPath/$fileName';
-
-    File file = File(filePath);
-    await file.writeAsString(csvString, encoding: utf8);
-  }
-
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StudentPunchLogViewModel>();
-
+    ExcelDownload excelDownload = ExcelDownload();
     return Scaffold(
       body: viewModel.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -168,22 +143,57 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                 ),
               ],
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await exceldownload(logList);
+      floatingActionButton: Stack(
+        children: [
+          Align(
+            alignment: Alignment(
+                Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2),
+            child: FloatingActionButton(
+              onPressed: () async {
+                List<String> columnTitles = ['이름', '날짜', '시간', '등하원'];
+                String fliename ='${viewModel.punchLogs[0].name} 등하원내역';
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('CSV 파일다운로드 완료'),
+                await excelDownload.excelDownload(
+                  viewModel.punchLogs,
+                  fliename,
+                  columnTitles,
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('엑셀 파일다운로드 완료'),
+                  ),
+                );
+              },
+              backgroundColor: _appBarColor,
+              tooltip: '출결정보 다운로드',
+              child: const Icon(
+                Icons.file_download,
+                color: Colors.white,
+              ),
             ),
-          );
-        },
-        backgroundColor: _appBarColor,
-        tooltip: '출결정보 다운로드',
-        child: const Icon(
-          Icons.file_download,
-          color: Colors.white,
-        ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton(
+              onPressed: () async {
+                await excelDownload.csvDownload(viewModel.punchLogs);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('CSV 파일다운로드 완료'),
+                  ),
+                );
+              },
+              backgroundColor: _appBarColor,
+              tooltip: '출결정보 다운로드 CSV',
+              child: const Icon(
+                Icons.file_download,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
