@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import 'excel_download.dart';
+
 class AcademyStudentListScreen extends StatefulWidget {
   const AcademyStudentListScreen({
     Key? key,
@@ -33,6 +35,7 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<AcademyStudentListViewModel>();
+    ExcelDownload excelDownload = ExcelDownload();
 
     return Scaffold(
       appBar: AppBar(
@@ -147,6 +150,34 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async { List<String> columnTitles = [
+          '이름',
+          '출결코드',
+          '대표 보호자 번호',
+          '메모'
+        ];
+        String fileName =
+            '${viewModel.academy.name} 학생명단';
+
+        final param = viewModel.students
+            .map((e) => e.toJson())
+            .toList();
+
+        List<String> haederName = [
+          'name',
+          'PIN',
+          'parentsPhone1',
+          'memo',
+        ];
+        await excelDownload.excelDownloadMapList(
+          param,
+          fileName,
+          columnTitles,
+          haederName,
+        ); },
+
       ),
     );
   }

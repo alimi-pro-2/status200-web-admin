@@ -152,10 +152,20 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                                 String fileName =
                                     '${viewModel.punchLogs[0].name} 등하원내역';
 
-                                await excelDownload.excelDownload(
-                                  viewModel.punchLogs,
+                                final param = viewModel.punchLogs
+                                    .map((e) => e.toJson())
+                                    .toList();
+                                List<String> haederName = [
+                                  'name',
+                                  'time',
+                                  'punchType'
+                                ];
+                                await excelDownload.excelDownloadMapList(
+                                  param,
                                   fileName,
                                   columnTitles,
+                                  haederName,
+                                  dateTimeSperate: true,
                                 );
                               },
                               child: const Row(children: [
