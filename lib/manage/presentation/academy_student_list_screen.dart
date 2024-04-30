@@ -18,6 +18,7 @@ class AcademyStudentListScreen extends StatefulWidget {
 class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
   bool _isNameAscending = true;
   final textColor = Colors.white;
+  ExcelDownload excelDownload = ExcelDownload();
 
   @override
   void initState() {
@@ -35,7 +36,6 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<AcademyStudentListViewModel>();
-    ExcelDownload excelDownload = ExcelDownload();
 
     return Scaffold(
       appBar: AppBar(
@@ -152,32 +152,30 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async { List<String> columnTitles = [
-          '이름',
-          '출결코드',
-          '대표 보호자 번호',
-          '메모'
-        ];
-        String fileName =
-            '${viewModel.academy.name} 학생명단';
+        onPressed: () async {
+          final List<String> columnTitles = [
+            '이름',
+            '출결코드',
+            '대표 보호자 번호',
+            '메모',
+          ];
+          final String fileName = '${viewModel.academy.name} 학생명단';
 
-        final param = viewModel.students
-            .map((e) => e.toJson())
-            .toList();
+          final param = viewModel.students.map((e) => e.toJson()).toList();
 
-        List<String> haederName = [
-          'name',
-          'PIN',
-          'parentsPhone1',
-          'memo',
-        ];
-        await excelDownload.excelDownloadMapList(
-          param,
-          fileName,
-          columnTitles,
-          haederName,
-        ); },
-
+          final List<String> haederName = [
+            'name',
+            'PIN',
+            'parentsPhone1',
+            'memo',
+          ];
+          await excelDownload.excelDownloadMapList(
+            param,
+            fileName,
+            columnTitles,
+            haederName,
+          );
+        },
       ),
     );
   }

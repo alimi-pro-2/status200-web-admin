@@ -18,6 +18,7 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
   List<PersonalPunchLog> logList = [];
   List<String> setList = ['15', '30', '60'];
   String dropdownValue = '15';
+  ExcelDownload excelDownload = ExcelDownload();
 
   @override
   void initState() {
@@ -36,7 +37,6 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StudentPunchLogViewModel>();
-    ExcelDownload excelDownload = ExcelDownload();
 
     return SafeArea(
       child: Scaffold(
@@ -143,19 +143,19 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                             const SizedBox(width: 15),
                             GestureDetector(
                               onTap: () async {
-                                List<String> columnTitles = [
+                                final List<String> columnTitles = [
                                   '이름',
                                   '날짜',
                                   '시간',
                                   '등하원'
                                 ];
-                                String fileName =
+                                final String fileName =
                                     '${viewModel.punchLogs[0].name} 등하원내역';
 
                                 final param = viewModel.punchLogs
                                     .map((e) => e.toJson())
                                     .toList();
-                                List<String> haederName = [
+                                final List<String> haederName = [
                                   'name',
                                   'time',
                                   'punchType'
