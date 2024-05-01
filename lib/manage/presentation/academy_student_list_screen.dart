@@ -1,4 +1,5 @@
 import 'package:alimipro_mock_data/manage/presentation/view_model/academy_student_list_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -6,9 +7,13 @@ import 'package:provider/provider.dart';
 import 'excel_download.dart';
 
 class AcademyStudentListScreen extends StatefulWidget {
+  final User _user;
+
   const AcademyStudentListScreen({
     Key? key,
-  }) : super(key: key);
+    required user,
+  })  : _user = user,
+        super(key: key);
 
   @override
   State<AcademyStudentListScreen> createState() =>
@@ -26,10 +31,10 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
     Future.microtask(() {
       context
           .read<AcademyStudentListViewModel>()
-          .setAcademy('0eC7zE8XXSFuH2ZzaHCc');
+          .setAcademy(widget._user.uid);
       context
           .read<AcademyStudentListViewModel>()
-          .setStudents('0eC7zE8XXSFuH2ZzaHCc');
+          .setStudents(widget._user.uid);
     });
   }
 

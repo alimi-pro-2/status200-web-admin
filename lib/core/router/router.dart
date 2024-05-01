@@ -13,6 +13,7 @@ import 'package:alimipro_mock_data/manage/presentation/student_punch_log_screen.
 import 'package:alimipro_mock_data/manage/presentation/view_model/academy_student_list_view_model.dart';
 import 'package:alimipro_mock_data/manage/presentation/view_model/student_punch_log_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -45,13 +46,14 @@ final router = GoRouter(
       builder: (context, state) {
         final AcademyRepository repo = AcademyRepositoryImpl(
             academyDataSource: AcademyDataSource(firebaseFireStore: db));
+        final data = state.extra as User;
         return ChangeNotifierProvider(
           create: (context) {
             return AcademyStudentListViewModel(
                 academyUseCase: GetAcademyUseCase(academyRepository: repo),
                 studentsUseCase: GetStudentsUseCase(academyRepository: repo));
           },
-          child: const AcademyStudentListScreen(),
+          child: AcademyStudentListScreen(user: data),
         );
       },
     ),
