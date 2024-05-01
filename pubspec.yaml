@@ -45,6 +45,8 @@ dependencies:
   go_router: ^14.0.1
   provider: ^6.1.2
   excel: ^4.0.3
+  firebase_auth: ^4.19.4
+  firebase_ui_auth: ^1.14.0
 
 dev_dependencies:
   flutter_test:
