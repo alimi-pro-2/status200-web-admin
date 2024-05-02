@@ -89,7 +89,6 @@ class ExcelDownload {
           rowData.add(TextCellValue(dateTime.toString().substring(11, 22)));
         } else {
           rowData.add(TextCellValue(data[e].toString()));
-          print(data);
         }
       }).toList();
 
