@@ -1,8 +1,16 @@
 import 'package:alimipro_mock_data/manage/presentation/view_model/student_punch_log_view_model.dart';
 import 'package:provider/provider.dart';
+import '../data/utility/csv_file_download_impl.dart';
+import '../data/utility/csv_maker_impl.dart';
+import '../data/utility/excel_maker_impl.dart';
+import '../data/utility/web_excel_file_download_impl.dart';
 import '../domain/model/personal_punch_log.dart';
 import 'package:flutter/material.dart';
 
+import '../domain/utility/csv_file_download.dart';
+import '../domain/utility/csv_maker.dart';
+import '../domain/utility/excel_file_download.dart';
+import '../domain/utility/excel_maker.dart';
 import 'excel_download.dart';
 
 class StudentPunchLogScreen extends StatefulWidget {
@@ -18,7 +26,11 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
   List<PersonalPunchLog> logList = [];
   List<String> setList = ['15', '30', '60'];
   String dropdownValue = '15';
+  ExcelFileDownload excelFileDownload = WebExcelFileDownloadImpl();
+  ExcelMaker excelMaker = ExcelMakerImpl();
   ExcelDownload excelDownload = ExcelDownload();
+  CsvFileDownload csvFileDownload = WebCsvFileDownloadImpl();
+  CsvMaker csvMaker = CsvMakerImpl();
 
   @override
   void initState() {
@@ -121,8 +133,35 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                             const SizedBox(width: 10),
                             GestureDetector(
                               onTap: () async {
-                                await excelDownload
-                                    .csvDownload(viewModel.punchLogs);
+                                /*   await excelDownload
+                                    .csvDownload(viewModel.punchLogs);*/
+
+                                final List<String> columnTitles = [
+                                  '이름',
+                                  '날짜',
+                                  '시간',
+                                  '등하원'
+                                ];
+                                final String fileName =
+                                    '${viewModel.punchLogs[0].name} 등하원내역';
+
+                                final param = viewModel.punchLogs
+                                    .map((e) => e.toJson())
+                                    .toList();
+                                final List<String> columnContentsNames = [
+                                  'name',
+                                  'time',
+                                  'punchType'
+                                ];
+
+                                final String csvdata = await csvMaker.csvMaker(
+                                  downloadcontents: param,
+                                  columnTitles: columnTitles,
+                                  columnContentsNames: columnContentsNames,
+                                  dateTimeSperate: true,
+                                );
+                                await csvFileDownload.csvFileDownload(
+                                    csvdata: csvdata, fileName: fileName);
 
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -155,18 +194,28 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                                 final param = viewModel.punchLogs
                                     .map((e) => e.toJson())
                                     .toList();
-                                final List<String> haederName = [
+                                final List<String> columnContentsNames = [
                                   'name',
                                   'time',
                                   'punchType'
                                 ];
-                                await excelDownload.excelDownloadMapList(
+                                final excelfile = await excelMaker.excelMaker(
+                                  downloadcontents: param,
+                                  columnTitles: columnTitles,
+                                  columnContentsNames: columnContentsNames,
+                                  dateTimeSperate: true,
+                                );
+                               await excelFileDownload.excelFileDownload(
+                                    excel: excelfile, fileName: fileName);
+                                // await excelFileDownload.excelFileDownload(excel:excelfile, fileName:fileName);
+
+/*                                await excelDownload.excelDownloadMapList(
                                   param,
                                   fileName,
                                   columnTitles,
                                   haederName,
                                   dateTimeSperate: true,
-                                );
+                                );*/
                               },
                               child: const Row(children: [
                                 Text(
