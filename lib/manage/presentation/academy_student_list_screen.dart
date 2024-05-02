@@ -1,10 +1,19 @@
 import 'package:alimipro_mock_data/manage/presentation/view_model/academy_student_list_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import 'excel_download.dart';
+import '../data/utility/csv_file_download_impl.dart';
+import '../data/utility/csv_maker_impl.dart';
+import '../data/utility/excel_maker_impl.dart';
+
+import '../data/utility/web_excel_file_download_impl.dart';
+import '../domain/utility/csv_file_download.dart';
+import '../domain/utility/csv_maker.dart';
+import '../domain/utility/excel_file_download.dart';
+import '../domain/utility/excel_maker.dart';
 
 class AcademyStudentListScreen extends StatefulWidget {
   final User _user;
@@ -23,18 +32,17 @@ class AcademyStudentListScreen extends StatefulWidget {
 class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
   bool _isNameAscending = true;
   final textColor = Colors.white;
-  ExcelDownload excelDownload = ExcelDownload();
+  ExcelFileDownload excelFileDownload = WebExcelFileDownloadImpl();
+  ExcelMaker excelMaker = ExcelMakerImpl();
+  CsvFileDownload csvFileDownload = WebCsvFileDownloadImpl();
+  CsvMaker csvMaker = CsvMakerImpl();
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      context
-          .read<AcademyStudentListViewModel>()
-          .setAcademy(widget._user.uid);
-      context
-          .read<AcademyStudentListViewModel>()
-          .setStudents(widget._user.uid);
+      context.read<AcademyStudentListViewModel>().setAcademy(widget._user.uid);
+      context.read<AcademyStudentListViewModel>().setStudents(widget._user.uid);
     });
   }
 
@@ -156,31 +164,78 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final List<String> columnTitles = [
-            '이름',
-            '출결코드',
-            '대표 보호자 번호',
-            '메모',
-          ];
-          final String fileName = '${viewModel.academy.name} 학생명단';
+      floatingActionButton: Stack(
+        children: [
+          Align(
+            alignment: Alignment(
+                Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2),
+            child: FloatingActionButton(
+              onPressed: () async {
+                final List<String> columnTitles = [
+                  '이름',
+                  '출결코드',
+                  '대표 보호자 번호',
+                  '메모',
+                ];
+                final String fileName = '${viewModel.academy.name} 학생명단';
 
-          final param = viewModel.students.map((e) => e.toJson()).toList();
+                final param =
+                    viewModel.students.map((e) => e.toJson()).toList();
 
-          final List<String> haederName = [
-            'name',
-            'PIN',
-            'parentsPhone1',
-            'memo',
-          ];
-          await excelDownload.excelDownloadMapList(
-            param,
-            fileName,
-            columnTitles,
-            haederName,
-          );
-        },
+                final List<String> columnContentsNames = [
+                  'name',
+                  'PIN',
+                  'parentsPhone1',
+                  'memo',
+                ];
+                final excelfile = await excelMaker.excelMaker(
+                  downloadcontents: param,
+                  columnTitles: columnTitles,
+                  columnContentsNames: columnContentsNames,
+                  dateTimeSperate: true,
+                );
+                await excelFileDownload.excelFileDownload(
+                  excel: excelfile,
+                  fileName: fileName,
+                );
+              },
+              child: Icon(Icons.download),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton(
+              onPressed: () async {
+                final List<String> columnTitles = [
+                  '이름',
+                  '출결코드',
+                  '대표 보호자 번호',
+                  '메모',
+                ];
+                final String fileName = '${viewModel.academy.name} 학생명단';
+
+                final param =
+                    viewModel.students.map((e) => e.toJson()).toList();
+
+                final List<String> columnContentsNames = [
+                  'name',
+                  'PIN',
+                  'parentsPhone1',
+                  'memo',
+                ];
+                final String csvdata = await csvMaker.csvMaker(
+                  downloadcontents: param,
+                  columnTitles: columnTitles,
+                  columnContentsNames: columnContentsNames,
+                  dateTimeSperate: true,
+                );
+                await csvFileDownload.csvFileDownload(
+                    csvdata: csvdata, fileName: fileName);
+              },
+              child: Icon(Icons.download),
+            ),
+          ),
+        ],
       ),
     );
   }

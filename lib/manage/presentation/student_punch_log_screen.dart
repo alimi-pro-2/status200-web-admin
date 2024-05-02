@@ -194,6 +194,7 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                                 final param = viewModel.punchLogs
                                     .map((e) => e.toJson())
                                     .toList();
+
                                 final List<String> columnContentsNames = [
                                   'name',
                                   'time',
@@ -205,17 +206,8 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                                   columnContentsNames: columnContentsNames,
                                   dateTimeSperate: true,
                                 );
-                               await excelFileDownload.excelFileDownload(
+                                await excelFileDownload.excelFileDownload(
                                     excel: excelfile, fileName: fileName);
-                                // await excelFileDownload.excelFileDownload(excel:excelfile, fileName:fileName);
-
-/*                                await excelDownload.excelDownloadMapList(
-                                  param,
-                                  fileName,
-                                  columnTitles,
-                                  haederName,
-                                  dateTimeSperate: true,
-                                );*/
                               },
                               child: const Row(children: [
                                 Text(
