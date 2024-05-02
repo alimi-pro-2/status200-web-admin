@@ -18,9 +18,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-//TODO: db 전역변수를 어떻게 할것인지
-// final db = FirebaseFirestore.instance..useFirestoreEmulator('10.0.2.2', 8080);
-final db = FirebaseFirestore.instance..useFirestoreEmulator('localhost', 8080);
+import '../../di/di_setup.dart';
 
 final router = GoRouter(
   initialLocation: '/sign-in',
@@ -45,7 +43,8 @@ final router = GoRouter(
       path: '/studentList',
       builder: (context, state) {
         final AcademyRepository repo = AcademyRepositoryImpl(
-            academyDataSource: AcademyDataSource(firebaseFireStore: db));
+            academyDataSource: AcademyDataSource(
+                firebaseFireStore: getIt<FirebaseFirestore>()));
         final data = state.extra as User;
         return ChangeNotifierProvider(
           create: (context) {
@@ -61,7 +60,8 @@ final router = GoRouter(
       path: '/studentList/punchLogs',
       builder: (context, state) {
         final LogDataRepository repo = LogDataRepositoryImpl(
-            logDataSource: LogDataSource(firebaseFireStore: db));
+            logDataSource:
+                LogDataSource(firebaseFireStore: getIt<FirebaseFirestore>()));
         final data = state.extra as Map<String, String>;
 
         return ChangeNotifierProvider(

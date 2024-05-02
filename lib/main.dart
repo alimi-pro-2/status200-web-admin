@@ -4,26 +4,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'di/di_setup.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  configureDependencies();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  final db = FirebaseFirestore.instance..useFirestoreEmulator('10.0.2.2', 8080);
   FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
 
-  runApp(MyApp(db: db));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final FirebaseFirestore db;
-
   const MyApp({
     super.key,
-    required this.db,
   });
 
   // This widget is the root of your application.
