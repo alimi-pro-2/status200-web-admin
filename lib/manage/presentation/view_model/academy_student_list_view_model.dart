@@ -3,7 +3,9 @@ import 'package:alimipro_mock_data/manage/domain/model/student.dart';
 import 'package:alimipro_mock_data/manage/domain/use_case/get_academy_use_case.dart';
 import 'package:alimipro_mock_data/manage/domain/use_case/get_students_use_case.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class AcademyStudentListViewModel with ChangeNotifier {
   Academy _academy = Academy(
     countryCode: '',

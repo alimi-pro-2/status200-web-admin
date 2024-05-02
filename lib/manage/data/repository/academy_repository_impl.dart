@@ -1,9 +1,11 @@
 import 'package:alimipro_mock_data/manage/domain/model/academy.dart';
 import 'package:alimipro_mock_data/manage/domain/model/student.dart';
 import 'package:alimipro_mock_data/manage/domain/repository/academy_repository.dart';
+import 'package:injectable/injectable.dart';
 
 import '../data_source/academy_data_source.dart';
 
+@Singleton(as: AcademyRepository)
 class AcademyRepositoryImpl implements AcademyRepository {
   final AcademyDataSource _academyDataSource;
 
