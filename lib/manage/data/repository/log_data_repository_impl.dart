@@ -2,7 +2,9 @@ import 'package:alimipro_mock_data/manage/data/data_source/log_data_source.dart'
 import 'package:alimipro_mock_data/manage/domain/model/personal_punch_log.dart';
 import 'package:alimipro_mock_data/manage/domain/repository/log_data_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
 
+@Singleton(as: LogDataRepository)
 class LogDataRepositoryImpl implements LogDataRepository {
   final LogDataSource _logDataSource;
 

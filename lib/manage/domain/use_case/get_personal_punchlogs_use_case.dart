@@ -1,8 +1,10 @@
 import 'package:alimipro_mock_data/manage/domain/model/personal_punch_log.dart';
 import 'package:alimipro_mock_data/manage/domain/repository/log_data_repository.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../core/result/result.dart';
 
+@singleton
 class GetPersonalPunchLogsUseCase {
   final LogDataRepository _logDataRepository;
 

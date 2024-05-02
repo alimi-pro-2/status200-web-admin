@@ -2,7 +2,9 @@ import 'package:alimipro_mock_data/core/result/result.dart';
 import 'package:alimipro_mock_data/manage/domain/model/personal_punch_log.dart';
 import 'package:alimipro_mock_data/manage/domain/use_case/get_personal_punchlogs_use_case.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class StudentPunchLogViewModel with ChangeNotifier {
   List<PersonalPunchLog> _punchLogs = [];
   final GetPersonalPunchLogsUseCase _personalPunchLogsUseCase;

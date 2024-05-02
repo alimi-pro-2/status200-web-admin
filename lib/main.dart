@@ -8,11 +8,11 @@ import 'di/di_setup.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  configureDependencies();
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  configureDependencies();
+  WidgetsFlutterBinding.ensureInitialized();
 
   FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
 
