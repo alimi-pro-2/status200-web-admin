@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 @module
-abstract class AppModule {
+abstract class DBModule {
   @lazySingleton
-  FirebaseFirestore get fireabaseFirestore =>
+  FirebaseFirestore get firebaseFirestore =>
       FirebaseFirestore.instance..useFirestoreEmulator('localhost', 8080);
 }
