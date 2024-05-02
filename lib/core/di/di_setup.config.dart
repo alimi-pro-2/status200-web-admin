@@ -8,7 +8,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:alimipro_mock_data/di/app_module.dart' as _i15;
+import 'package:alimipro_mock_data/core/di/app_module.dart' as _i15;
 import 'package:alimipro_mock_data/manage/data/data_source/academy_data_source.dart'
     as _i4;
 import 'package:alimipro_mock_data/manage/data/data_source/log_data_source.dart'

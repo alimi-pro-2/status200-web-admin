@@ -8,7 +8,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../di/di_setup.dart';
+import '../di/di_setup.dart';
 
 final router = GoRouter(
   initialLocation: '/sign-in',
