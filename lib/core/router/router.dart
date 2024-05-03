@@ -1,5 +1,9 @@
+import 'package:alimipro_mock_data/admin/data/data_source/admin_data_source.dart';
+import 'package:alimipro_mock_data/admin/data/repository/admin_repository_impl.dart';
+import 'package:alimipro_mock_data/admin/domain/use_case/post_academy_info_use_case.dart';
 import 'package:alimipro_mock_data/admin/presentation/academy_info_input_gate_screen.dart';
 import 'package:alimipro_mock_data/admin/presentation/auth_gate_screen.dart';
+import 'package:alimipro_mock_data/admin/presentation/view_model/academy_info_input_gate_view_model.dart';
 import 'package:alimipro_mock_data/manage/presentation/academy_student_list_screen.dart';
 import 'package:alimipro_mock_data/manage/presentation/student_punch_log_screen.dart';
 import 'package:alimipro_mock_data/manage/presentation/view_model/academy_student_list_view_model.dart';
@@ -31,12 +35,20 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/academy-info-input',
-      builder: (context, state) {
-        final data = state.extra as User;
-        return AcademyInfoInputGateScreen(user: data);
-      }
-    ),
+        path: '/academy-info-input',
+        builder: (context, state) {
+          final data = state.extra as User;
+          return AcademyInfoInputGateScreen(
+            user: data,
+            academyInfoInputGateViewModel: AcademyInfoInputGateViewModel(
+              postAcademyInfoUseCase: PostAcademyInfoUseCase(
+                adminRepository: AdminRepositoryImpl(
+                  adminDataSource: AdminDataSource(user: data),
+                ),
+              ),
+            ),
+          );
+        }),
     GoRoute(
       path: '/studentList',
       builder: (context, state) {

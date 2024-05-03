@@ -1,14 +1,20 @@
+import 'package:alimipro_mock_data/admin/presentation/dto/academy_request_dto.dart';
+import 'package:alimipro_mock_data/admin/presentation/view_model/academy_info_input_gate_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AcademyInfoInputGateScreen extends StatefulWidget {
+
+  final AcademyInfoInputGateViewModel _viewModel;
   final User _user;
 
   const AcademyInfoInputGateScreen({
     super.key,
+    required AcademyInfoInputGateViewModel academyInfoInputGateViewModel,
     required User user,
-  }) : _user = user;
+  })  : _user = user,
+        _viewModel = academyInfoInputGateViewModel;
 
   @override
   State<AcademyInfoInputGateScreen> createState() =>
@@ -76,7 +82,9 @@ class _AcademyInfoInputGateScreenState
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: _validateName(_formController1) ? Colors.green : Colors.black45,
+                      color: _validateName(_formController1)
+                          ? Colors.green
+                          : Colors.black45,
                       width: 1.2,
                     ),
                   ),
@@ -94,7 +102,9 @@ class _AcademyInfoInputGateScreenState
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: _validateName(_formController2) ? Colors.green : Colors.black45,
+                      color: _validateName(_formController2)
+                          ? Colors.green
+                          : Colors.black45,
                       width: 1.2,
                     ),
                   ),
@@ -128,6 +138,12 @@ class _AcademyInfoInputGateScreenState
                   if (_validateName(_formController1) &&
                       _validateName(_formController2) &&
                       _validateNumber()) {
+                    final academyRequestDto = AcademyRequestDto(
+                      academyName: _formController1.text,
+                      name: _formController2.text,
+                      number: _formController3.text,
+                    );
+                    widget._viewModel.postAcademyInfo(academyRequestDto);
                     context.go('/studentList', extra: widget._user);
                   }
                 },
