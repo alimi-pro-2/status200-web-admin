@@ -21,6 +21,18 @@ class NoticeRepositoryImpl implements NoticeRepository {
     return Notice.fromJson(documentSnapshot.data()!);
   }
 
+  @override
+  Future<String> setNotice(Notice notice) async {
+    final documentRef = await _noticeDataSource.setNoticeDocumentRef(notice);
+    String? id = await documentRef.id;
+
+    if (id.isEmpty) {
+      throw Exception('등록되지 않앗습니다');
+    }
+
+    return id!;
+  }
+
   const NoticeRepositoryImpl({
     required NoticeDataSource noticeDataSource,
   }) : _noticeDataSource = noticeDataSource;

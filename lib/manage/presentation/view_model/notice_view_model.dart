@@ -1,3 +1,4 @@
+import 'package:alimipro_mock_data/manage/domain/use_case/set_students_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -14,15 +15,26 @@ class NoticeViewModel with ChangeNotifier {
     title: '',
     date: DateTime.now(),
   );
-  final GetNoticeUseCase _noticeUseCase;
+  final GetNoticeUseCase _getNoticeUseCase;
+  final SetNoticeUseCase _setNoticeUseCase;
 
   Notice get notice => _notice;
 
-  Future<void> setNotice(String uid) async {
-    final notice = await _noticeUseCase.getNotice(uid);
+  Future<void> getNotice(String uid) async {
+    final notice = await _getNoticeUseCase.getNotice(uid);
     _notice = notice;
     notifyListeners();
   }
 
-  NoticeViewModel({required GetNoticeUseCase noticeUseCase,}): _noticeUseCase = noticeUseCase;
+  Future<String> setNotice( Map<String, dynamic> noticeMap) async {
+    final id = await _setNoticeUseCase.setNotice( noticeMap);
+    notifyListeners();
+    return id;
+  }
+
+  NoticeViewModel({
+    required SetNoticeUseCase setNoticeUseCase,
+    required GetNoticeUseCase noticeUseCase,
+  })  : _getNoticeUseCase = noticeUseCase,
+        _setNoticeUseCase = setNoticeUseCase;
 }
