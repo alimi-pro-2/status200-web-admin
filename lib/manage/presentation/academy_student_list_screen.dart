@@ -187,6 +187,7 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
             alignment: Alignment(
                 Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2),
             child: FloatingActionButton(
+                heroTag:null,
               onPressed: () async {
                 final List<String> columnTitles = [
                   '이름',
@@ -222,6 +223,7 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
           Align(
             alignment: Alignment.bottomRight,
             child: FloatingActionButton(
+              heroTag : null,
               onPressed: () async {
                 final List<String> columnTitles = [
                   '이름',

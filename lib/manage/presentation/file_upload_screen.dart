@@ -23,26 +23,15 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
   final TextEditingController _controller2 = TextEditingController();
   final TextEditingController _controller3 = TextEditingController();
 
-  late NoticeViewModel noticeViewModel;
   FilePickerResult? result;
 
-
-  @override
-  void initState() {
-    super.initState();
-
-    //TODO: pastFromToday를 변수로 받아야 함. 오늘 부터 며칠 이전 까지의 기록을 받을 것 인지를 넘기는 곳
-    Future.microtask(() {
-      noticeViewModel = context.read<NoticeViewModel>();
-    });
-  }
-
-  Future<void> _ficFile() async{
+  Future<void> _ficFile() async {
     result = await FilePicker.platform.pickFiles();
   }
 
   Future<void> _uploadFile(
-    String title, String contents, String parentPhone) async {
+      String title, String contents, String parentPhone) async {
+    final noticeViewModel = context.read<NoticeViewModel>();
     String downloadUrl = '';
 
     if (result != null) {
@@ -55,7 +44,7 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
       TaskSnapshot snapshot = await uploadTask;
 
       // 업로드된 파일의 다운로드 URL 가져오기
-      String downloadUrl = await snapshot.ref.getDownloadURL();
+      downloadUrl = await snapshot.ref.getDownloadURL();
 
       Map<String, dynamic> noticeMap = {
         'academy': widget.academyInfo['name'], // 학원 이름
@@ -93,10 +82,12 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Upload File'),
-        ),
-        body: Column(
+      appBar: AppBar(
+        title: const Text('Upload File'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Column(
           children: [
             TextField(
               controller: _controller1,
@@ -111,12 +102,16 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
               decoration: const InputDecoration(labelText: '부모전화번호'),
             ),
             const SizedBox(height: 20),
+            ElevatedButton(onPressed: _ficFile, child: const Text('파일 선택')),
+            const SizedBox(
+              height: 10,
+            ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 String title = _controller1.text;
                 String contents = _controller2.text;
                 String parentsPhone = _controller3.text;
-                _uploadFile(title, contents, parentsPhone);
+                await _uploadFile(title, contents, parentsPhone);
                 Navigator.pop(context);
                 // print('Input 1: $input1');
                 // print('Input 2: $input2');
@@ -124,11 +119,9 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
               },
               child: const Text('Submit'),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(onPressed: _ficFile, child: const Text('파일 선택'))
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
