@@ -1,12 +1,13 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:alimipro_mock_data/manage/domain/utility/file_downloader.dart';
+import 'package:excel/excel.dart';
 
-class MobileExcelFileDownload implements Downloader {
+import '../../domain/utility/Excel_file_download.dart';
+
+class MobileExcelFileDownload implements ExcelFileDownload {
   @override
-  Future<void> download({
-    required Uint8List data,
+  Future<void> excelFileDownload({
+    required Excel excel,
     required String fileName,
   }) async {
     String directoryPath = '/storage/emulated/0/Download';
@@ -16,6 +17,6 @@ class MobileExcelFileDownload implements Downloader {
     }
     String filePath = '$directoryPath/$fileName';
     File file = File(filePath);
-    await file.writeAsBytes(data.toList());
+    await file.writeAsBytes(excel.encode()!);
   }
 }
