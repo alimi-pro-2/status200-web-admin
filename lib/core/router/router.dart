@@ -1,3 +1,4 @@
+import 'package:alimipro_mock_data/admin/presentation/academy_info_input_gate_screen.dart';
 import 'package:alimipro_mock_data/admin/presentation/auth_gate_screen.dart';
 import 'package:alimipro_mock_data/manage/presentation/academy_student_list_screen.dart';
 import 'package:alimipro_mock_data/manage/presentation/student_punch_log_screen.dart';
@@ -28,6 +29,13 @@ final router = GoRouter(
           },
         ),
       ],
+    ),
+    GoRoute(
+      path: '/academy-info-input',
+      builder: (context, state) {
+        final data = state.extra as User;
+        return AcademyInfoInputGateScreen(user: data);
+      }
     ),
     GoRoute(
       path: '/studentList',

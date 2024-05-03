@@ -29,7 +29,9 @@ class AuthGateScreen extends StatelessWidget {
           if (user == null) {
             return;
           }
-          context.pushReplacement('/studentList', extra: user);
+          if (state is UserCreated) {
+            context.go('/academy-info-input', extra: user);
+          }
         })),
       ],
       headerBuilder: (context, constraints, shrinkOffset) {
