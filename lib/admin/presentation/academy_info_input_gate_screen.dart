@@ -33,7 +33,7 @@ class _AcademyInfoInputGateScreenState
 
   bool _validateName(TextEditingController controller) {
     final academyName = controller.text;
-    if (academyName == null || academyName.isEmpty) {
+    if (academyName == null || academyName.isEmpty || academyName.trim().isEmpty) {
       return false;
     }
     return true;
