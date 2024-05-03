@@ -59,19 +59,36 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '학원명 : ${viewModel.academy.name}',
-                    style: const TextStyle(fontSize: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '학원명 : ${viewModel.academy.name}',
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      Text('학원장 : ${viewModel.academy.master}'),
+                      Text('대표번호 : ${viewModel.academy.phone}'),
+                    ],
                   ),
-                  Text('학원장 : ${viewModel.academy.master}'),
-                  Text('대표번호 : ${viewModel.academy.phone}'),
-                ],
-              ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    final data = {
+                      'name': viewModel.academy.name,
+                    };
+
+                    context.push('/notice',
+                        extra: data);
+
+                  },
+                  child: Text('공지사항입력'),
+                )
+              ],
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
