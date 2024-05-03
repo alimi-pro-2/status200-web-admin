@@ -10,9 +10,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:alimipro_mock_data/core/di/app_module.dart' as _i21;
 import 'package:alimipro_mock_data/manage/data/data_source/academy_data_source.dart'
-    as _i4;
-import 'package:alimipro_mock_data/manage/data/data_source/log_data_source.dart'
     as _i5;
+import 'package:alimipro_mock_data/manage/data/data_source/log_data_source.dart'
+    as _i4;
 import 'package:alimipro_mock_data/manage/data/data_source/notice_data_source.dart'
     as _i6;
 import 'package:alimipro_mock_data/manage/data/repository/academy_repository_impl.dart'
@@ -60,18 +60,18 @@ extension GetItInjectableX on _i1.GetIt {
     );
     final appModule = _$AppModule();
     gh.singleton<_i3.FirebaseFirestore>(() => appModule.firebaseFirestore);
-    gh.singleton<_i4.AcademyDataSource>(() =>
-        _i4.AcademyDataSource(firebaseFireStore: gh<_i3.FirebaseFirestore>()));
-    gh.singleton<_i5.LogDataSource>(() =>
-        _i5.LogDataSource(firebaseFireStore: gh<_i3.FirebaseFirestore>()));
+    gh.singleton<_i4.LogDataSource>(() =>
+        _i4.LogDataSource(firebaseFireStore: gh<_i3.FirebaseFirestore>()));
+    gh.singleton<_i5.AcademyDataSource>(() =>
+        _i5.AcademyDataSource(firebaseFireStore: gh<_i3.FirebaseFirestore>()));
     gh.singleton<_i6.NoticeDataSource>(() =>
         _i6.NoticeDataSource(firebaseFireStore: gh<_i3.FirebaseFirestore>()));
     gh.singleton<_i7.AcademyRepository>(() => _i8.AcademyRepositoryImpl(
-        academyDataSource: gh<_i4.AcademyDataSource>()));
+        academyDataSource: gh<_i5.AcademyDataSource>()));
     gh.singleton<_i9.NoticeRepository>(() => _i10.NoticeRepositoryImpl(
         noticeDataSource: gh<_i6.NoticeDataSource>()));
     gh.singleton<_i11.LogDataRepository>(() =>
-        _i12.LogDataRepositoryImpl(logDataSource: gh<_i5.LogDataSource>()));
+        _i12.LogDataRepositoryImpl(logDataSource: gh<_i4.LogDataSource>()));
     gh.singleton<_i13.GetAcademyUseCase>(() =>
         _i13.GetAcademyUseCase(academyRepository: gh<_i7.AcademyRepository>()));
     gh.singleton<_i14.GetStudentsUseCase>(() => _i14.GetStudentsUseCase(
