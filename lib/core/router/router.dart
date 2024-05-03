@@ -1,9 +1,11 @@
 import 'package:alimipro_mock_data/admin/data/data_source/admin_data_source.dart';
 import 'package:alimipro_mock_data/admin/data/repository/admin_repository_impl.dart';
+import 'package:alimipro_mock_data/admin/domain/use_case/is_required_info_complete_use_case.dart';
 import 'package:alimipro_mock_data/admin/domain/use_case/post_academy_info_use_case.dart';
 import 'package:alimipro_mock_data/admin/presentation/academy_info_input_gate_screen.dart';
 import 'package:alimipro_mock_data/admin/presentation/auth_gate_screen.dart';
 import 'package:alimipro_mock_data/admin/presentation/view_model/academy_info_input_gate_view_model.dart';
+import 'package:alimipro_mock_data/admin/presentation/view_model/auth_gate_view_model.dart';
 import 'package:alimipro_mock_data/manage/presentation/academy_student_list_screen.dart';
 import 'package:alimipro_mock_data/manage/presentation/student_punch_log_screen.dart';
 import 'package:alimipro_mock_data/manage/presentation/view_model/academy_student_list_view_model.dart';
@@ -20,7 +22,17 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/sign-in',
-      builder: (context, state) => const AuthGateScreen(),
+      builder: (context, state) {
+        return AuthGateScreen(
+          authGateViewModel: AuthGateViewModel(
+            isRequiredInfoCompleteUseCase: IsRequiredInfoCompleteUseCase(
+              adminRepository: AdminRepositoryImpl(
+                adminDataSource: AdminDataSource(),
+              ),
+            ),
+          ),
+        );
+      },
       routes: [
         GoRoute(
           path: 'forgot-password',
@@ -37,13 +49,11 @@ final router = GoRouter(
     GoRoute(
         path: '/academy-info-input',
         builder: (context, state) {
-          final data = state.extra as User;
           return AcademyInfoInputGateScreen(
-            user: data,
             academyInfoInputGateViewModel: AcademyInfoInputGateViewModel(
               postAcademyInfoUseCase: PostAcademyInfoUseCase(
                 adminRepository: AdminRepositoryImpl(
-                  adminDataSource: AdminDataSource(user: data),
+                  adminDataSource: AdminDataSource(),
                 ),
               ),
             ),
@@ -52,12 +62,11 @@ final router = GoRouter(
     GoRoute(
       path: '/studentList',
       builder: (context, state) {
-        final data = state.extra as User;
         return ChangeNotifierProvider(
           create: (context) {
             return getIt<AcademyStudentListViewModel>();
           },
-          child: AcademyStudentListScreen(user: data),
+          child: AcademyStudentListScreen(),
         );
       },
     ),

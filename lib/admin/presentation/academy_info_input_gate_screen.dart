@@ -1,20 +1,16 @@
 import 'package:alimipro_mock_data/admin/presentation/dto/academy_request_dto.dart';
 import 'package:alimipro_mock_data/admin/presentation/view_model/academy_info_input_gate_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AcademyInfoInputGateScreen extends StatefulWidget {
 
   final AcademyInfoInputGateViewModel _viewModel;
-  final User _user;
 
   const AcademyInfoInputGateScreen({
     super.key,
     required AcademyInfoInputGateViewModel academyInfoInputGateViewModel,
-    required User user,
-  })  : _user = user,
-        _viewModel = academyInfoInputGateViewModel;
+  })  : _viewModel = academyInfoInputGateViewModel;
 
   @override
   State<AcademyInfoInputGateScreen> createState() =>
@@ -144,7 +140,7 @@ class _AcademyInfoInputGateScreenState
                       number: _formController3.text,
                     );
                     widget._viewModel.postAcademyInfo(academyRequestDto);
-                    context.go('/studentList', extra: widget._user);
+                    context.go('/studentList');
                   }
                 },
               ),
