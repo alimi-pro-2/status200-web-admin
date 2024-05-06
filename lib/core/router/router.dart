@@ -8,6 +8,8 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../manage/presentation/file_upload_screen.dart';
+import '../../manage/presentation/view_model/notice_view_model.dart';
 import '../di/di_setup.dart';
 
 final router = GoRouter(
@@ -52,6 +54,19 @@ final router = GoRouter(
           },
           child: StudentPunchLogScreen(
             studentInfo: data,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/notice',
+      builder: (context, state) {
+        final data = state.extra as Map<String, String>;
+        return ChangeNotifierProvider(
+          create: (context) {
+            return getIt<NoticeViewModel>();
+          },
+          child:  FileUploadScreen(academyInfo: data,
           ),
         );
       },
