@@ -8,7 +8,7 @@ class AcademyInfoInputGateViewModel {
     required PostAcademyInfoUseCase postAcademyInfoUseCase,
   }) : _postAcademyInfoUseCase = postAcademyInfoUseCase;
 
-  void postAcademyInfo(AcademyRequestDto academyRequestDto) {
-    _postAcademyInfoUseCase.execute(academyRequestDto);
+  Future<void> postAcademyInfo(AcademyRequestDto academyRequestDto) async {
+    return await _postAcademyInfoUseCase.execute(academyRequestDto);
   }
 }

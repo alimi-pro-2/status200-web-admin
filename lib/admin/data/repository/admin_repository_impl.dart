@@ -11,13 +11,13 @@ class AdminRepositoryImpl implements AdminRepository {
   }) : _adminDataSource = adminDataSource;
 
   @override
-  void postAcademyInfo(AcademyRequestDto academyRequestDto) {
+  Future<void> postAcademyInfo(AcademyRequestDto academyRequestDto) async {
     final data = {
       'name': academyRequestDto.academyName,
       'master': academyRequestDto.name,
       'phone': academyRequestDto.number,
     };
-    _adminDataSource.postAcademyInfo(data);
+    await _adminDataSource.postAcademyInfo(data);
   }
 
   @override

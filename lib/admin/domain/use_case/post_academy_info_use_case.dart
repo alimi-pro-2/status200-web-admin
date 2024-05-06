@@ -8,7 +8,7 @@ class PostAcademyInfoUseCase {
     required AdminRepository adminRepository,
   }) : _adminRepository = adminRepository;
 
-  void execute(AcademyRequestDto academyRequestDto) {
-    _adminRepository.postAcademyInfo(academyRequestDto);
+  Future<void> execute(AcademyRequestDto academyRequestDto) async {
+    return await _adminRepository.postAcademyInfo(academyRequestDto);
   }
 }

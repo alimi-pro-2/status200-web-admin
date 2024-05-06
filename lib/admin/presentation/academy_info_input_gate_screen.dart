@@ -130,7 +130,7 @@ class _AcademyInfoInputGateScreenState
               ),
               ElevatedButton(
                 child: const Text('확인'),
-                onPressed: () {
+                onPressed: () async {
                   if (_validateName(_formController1) &&
                       _validateName(_formController2) &&
                       _validateNumber()) {
@@ -139,7 +139,7 @@ class _AcademyInfoInputGateScreenState
                       name: _formController2.text,
                       number: _formController3.text,
                     );
-                    widget._viewModel.postAcademyInfo(academyRequestDto);
+                    await widget._viewModel.postAcademyInfo(academyRequestDto);
                     context.go('/studentList');
                   }
                 },

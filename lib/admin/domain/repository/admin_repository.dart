@@ -2,6 +2,6 @@ import 'package:alimipro_mock_data/admin/presentation/dto/academy_request_dto.da
 
 abstract interface class AdminRepository {
 
-  void postAcademyInfo(AcademyRequestDto academyRequestDto);
+  Future<void> postAcademyInfo(AcademyRequestDto academyRequestDto);
   Future<bool> isRequiredInfoComplete();
 }
