@@ -23,13 +23,13 @@ class AcademyStudentListViewModel with ChangeNotifier {
   List<Student> get students => List.unmodifiable(_students);
 
   Future<void> setAcademy(String uid) async {
-    final academy = await _academyUseCase.getAcademy(uid);
+    final academy = await _academyUseCase.execute(uid);
     _academy = academy;
     notifyListeners();
   }
 
   Future<void> setStudents(String uid) async {
-    final students = await _studentsUseCase.getStudents(uid);
+    final students = await _studentsUseCase.execute(uid);
     _students = students;
     notifyListeners();
   }

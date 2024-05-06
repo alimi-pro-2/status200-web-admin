@@ -16,13 +16,11 @@ import '../domain/utility/excel_file_download.dart';
 import '../domain/utility/excel_maker.dart';
 
 class AcademyStudentListScreen extends StatefulWidget {
-  final User _user;
+  final String _uid = FirebaseAuth.instance.currentUser!.uid;
 
-  const AcademyStudentListScreen({
+  AcademyStudentListScreen({
     Key? key,
-    required user,
-  })  : _user = user,
-        super(key: key);
+  }) : super(key: key);
 
   @override
   State<AcademyStudentListScreen> createState() =>
@@ -41,8 +39,8 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<AcademyStudentListViewModel>().setAcademy(widget._user.uid);
-      context.read<AcademyStudentListViewModel>().setStudents(widget._user.uid);
+      context.read<AcademyStudentListViewModel>().setAcademy(widget._uid);
+      context.read<AcademyStudentListViewModel>().setStudents(widget._uid);
     });
   }
 
