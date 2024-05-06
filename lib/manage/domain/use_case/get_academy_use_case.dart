@@ -10,7 +10,7 @@ class GetAcademyUseCase {
     required AcademyRepository academyRepository,
   }) : _academyRepository = academyRepository;
 
-  Future<Academy> getAcademy(String uid) async {
+  Future<Academy> execute(String uid) async {
     return await _academyRepository.getAcademy(uid);
   }
 }

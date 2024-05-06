@@ -8,7 +8,7 @@ class IsRequiredInfoCompleteUseCase {
     required AdminRepository adminRepository,
   }) : _adminRepository = adminRepository;
 
-  Future<bool> isRequiredInfoComplete() async {
+  Future<bool> execute() async {
     return await _adminRepository.isRequiredInfoComplete();
   }
 }

@@ -9,6 +9,6 @@ class AcademyInfoInputGateViewModel {
   }) : _postAcademyInfoUseCase = postAcademyInfoUseCase;
 
   void postAcademyInfo(AcademyRequestDto academyRequestDto) {
-    _postAcademyInfoUseCase.postAcademyInfo(academyRequestDto);
+    _postAcademyInfoUseCase.execute(academyRequestDto);
   }
 }

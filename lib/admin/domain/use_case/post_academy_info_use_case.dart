@@ -8,7 +8,7 @@ class PostAcademyInfoUseCase {
     required AdminRepository adminRepository,
   }) : _adminRepository = adminRepository;
 
-  void postAcademyInfo(AcademyRequestDto academyRequestDto) {
+  void execute(AcademyRequestDto academyRequestDto) {
     _adminRepository.postAcademyInfo(academyRequestDto);
   }
 }

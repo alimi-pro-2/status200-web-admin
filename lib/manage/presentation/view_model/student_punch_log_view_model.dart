@@ -22,7 +22,7 @@ class StudentPunchLogViewModel with ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    final result = await _personalPunchLogsUseCase.getPersonalPunchLogs(
+    final result = await _personalPunchLogsUseCase.execute(
         name, parentPhone, pastFromToday);
 
     switch (result) {

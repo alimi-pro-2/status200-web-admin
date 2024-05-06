@@ -8,7 +8,7 @@ import '../../../core/result/result.dart';
 class GetPersonalPunchLogsUseCase {
   final LogDataRepository _logDataRepository;
 
-  Future<Result<List<PersonalPunchLog>, String>> getPersonalPunchLogs(
+  Future<Result<List<PersonalPunchLog>, String>> execute(
     String name,
     String parentPhone,
     int pastFromToday,

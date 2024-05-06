@@ -9,6 +9,6 @@ class AuthGateViewModel {
   }) : _isRequiredInfoCompleteUseCase = isRequiredInfoCompleteUseCase;
 
   Future<bool> isRequiredInfoComplete() async {
-    return await _isRequiredInfoCompleteUseCase.isRequiredInfoComplete();
+    return await _isRequiredInfoCompleteUseCase.execute();
   }
 }
