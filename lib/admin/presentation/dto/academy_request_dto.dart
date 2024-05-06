@@ -1,18 +1,12 @@
 class AcademyRequestDto {
 
-  final String _academyName;
-  final String _name;
-  final String _number;
+  final String academyName;
+  final String name;
+  final String number;
 
   const AcademyRequestDto({
-    required String academyName,
-    required String name,
-    required String number,
-  })  : _academyName = academyName,
-        _name = name,
-        _number = number;
-
-  String get number => _number;
-  String get name => _name;
-  String get academyName => _academyName;
+    required this.academyName,
+    required this.name,
+    required this.number,
+  });
 }
