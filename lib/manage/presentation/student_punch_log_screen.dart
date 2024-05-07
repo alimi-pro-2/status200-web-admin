@@ -1,17 +1,18 @@
 import 'package:alimipro_mock_data/manage/presentation/view_model/student_punch_log_view_model.dart';
 import 'package:provider/provider.dart';
-import '../data/utility/csv_file_download_impl.dart';
+
 import '../data/utility/csv_maker_impl.dart';
 import '../data/utility/excel_maker_impl.dart';
+import '../data/utility/file_doenloader_impl.dart';
 import '../data/utility/web_excel_file_download_impl.dart';
 import '../domain/model/personal_punch_log.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/utility/csv_file_download.dart';
 import '../domain/utility/csv_maker.dart';
 import '../domain/utility/excel_file_download.dart';
 import '../domain/utility/excel_maker.dart';
-import 'excel_download.dart';
+import '../domain/utility/file_downloader.dart';
+
 
 class StudentPunchLogScreen extends StatefulWidget {
   final Map<String, String> studentInfo;
@@ -28,8 +29,7 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
   String dropdownValue = '15';
   ExcelFileDownload excelFileDownload = WebExcelFileDownloadImpl();
   ExcelMaker excelMaker = ExcelMakerImpl();
-  ExcelDownload excelDownload = ExcelDownload();
-  CsvFileDownload csvFileDownload = WebCsvFileDownloadImpl();
+  FileDownloader fileDownload = FileDownloaderImpl();
   CsvMaker csvMaker = CsvMakerImpl();
 
   @override
@@ -143,7 +143,7 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                                   '등하원'
                                 ];
                                 final String fileName =
-                                    '${viewModel.punchLogs[0].name} 등하원내역';
+                                    '${viewModel.punchLogs[0].name} 등하원내역.csv';
 
                                 final param = viewModel.punchLogs
                                     .map((e) => e.toJson())
@@ -154,14 +154,16 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                                   'punchType'
                                 ];
 
-                                final String csvdata = await csvMaker.csvMaker(
+                                final csvdata = await csvMaker.csvMaker(
                                   downloadcontents: param,
                                   columnTitles: columnTitles,
                                   columnContentsNames: columnContentsNames,
                                   dateTimeSperate: true,
                                 );
-                                await csvFileDownload.csvFileDownload(
-                                    csvdata: csvdata, fileName: fileName);
+                                await fileDownload.fileDownload(
+                                  data: csvdata,
+                                  fileName: fileName,
+                                );
 
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -189,7 +191,7 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                                   '등하원'
                                 ];
                                 final String fileName =
-                                    '${viewModel.punchLogs[0].name} 등하원내역';
+                                    '${viewModel.punchLogs[0].name} 등하원내역.xlsx';
 
                                 final param = viewModel.punchLogs
                                     .map((e) => e.toJson())
@@ -206,8 +208,10 @@ class _StudentPunchLogScreenState extends State<StudentPunchLogScreen> {
                                   columnContentsNames: columnContentsNames,
                                   dateTimeSperate: true,
                                 );
-                                await excelFileDownload.excelFileDownload(
-                                    excel: excelfile, fileName: fileName);
+                                await fileDownload.fileDownload(
+                                  data: excelfile,
+                                  fileName: fileName,
+                                );
                               },
                               child: const Row(children: [
                                 Text(

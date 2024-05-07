@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 
@@ -7,7 +9,7 @@ import 'day_time_seperater_impl.dart';
 
 class ExcelMakerImpl implements ExcelMaker {
   @override
-  Future<Excel> excelMaker(
+  Future<Uint8List> excelMaker(
       {required List<Map<String, dynamic>> downloadcontents,
       required List<String> columnTitles,
       required List<String> columnContentsNames,
@@ -43,6 +45,6 @@ class ExcelMakerImpl implements ExcelMaker {
         cell.value = rowData[col];
       }
     }
-    return excel;
+    return Uint8List.fromList(excel.encode()!);;
   }
 }

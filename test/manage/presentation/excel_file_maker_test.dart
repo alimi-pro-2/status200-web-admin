@@ -33,12 +33,14 @@ void main() {
 
     ExcelMaker excelMaker = ExcelMakerImpl();
 
-    final excelfile = await excelMaker.excelMaker(
+    final exceldata = await excelMaker.excelMaker(
       downloadcontents: testList,
       columnTitles: columnTitles,
       columnContentsNames: columnContentsNames,
       dateTimeSperate: true,
     );
+
+    Excel excelfile = Excel.decodeBytes(exceldata);
 
     final excelcontent = await excelfile.sheets['Sheet1']!
         .cell(CellIndex.indexByString('A3'))
