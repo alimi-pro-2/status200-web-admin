@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../domain/utility/csv_maker.dart';
@@ -5,10 +7,11 @@ import 'package:csv/csv.dart' as csv;
 
 import '../../domain/utility/day_time_seperater.dart';
 import 'day_time_seperater_impl.dart';
+import 'dart:convert';
 
 class CsvMakerImpl implements CsvMaker {
   @override
-  Future<String> csvMaker({
+  Future<Uint8List> csvMaker({
     required List<Map<String, dynamic>> downloadcontents,
     required List<String> columnTitles,
     required List<String> columnContentsNames,
@@ -34,6 +37,6 @@ class CsvMakerImpl implements CsvMaker {
     }
 
     String csvString = const csv.ListToCsvConverter().convert(csvDatas);
-    return csvString;
+    return Uint8List.fromList(utf8.encode(csvString));
   }
 }
