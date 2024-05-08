@@ -26,11 +26,16 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
 
   FilePickerResult? result;
   bool downloadFin = true;
-  bool fileSelected = false;
+  bool limitexdFile = false;
   String titleErrorMessage = '타이틀이 입력되지 않았어요';
 
   Future<void> _ficFile() async {
     result = await FilePicker.platform.pickFiles();
+    if (result!.files.first.size > 3 * 1024 * 1024) {
+      limitexdFile = true;
+    } else {
+      limitexdFile = false;
+    }
   }
 
   Future<void> _uploadFile(
@@ -38,70 +43,52 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
     final noticeViewModel = context.read<NoticeViewModel>();
     String downloadUrl = '';
     String filename = '';
-    fileSelected = true;
 
     if (result != null) {
       PlatformFile file = result!.files.first;
 
-      if (file.size <= 3 * 1024 * 1024) {
-        filename = file.name;
-        fileSelected = false;
+      filename = file.name;
 
-        // Firebase Storage에 파일 업로드
-        Reference storageRef = FirebaseStorage.instance.ref().child(
-            'uploads/${DateTime.now().millisecondsSinceEpoch.toString()}');
-        UploadTask uploadTask = storageRef.putData(file.bytes!);
-        TaskSnapshot snapshot = await uploadTask;
+      // Firebase Storage에 파일 업로드
+      Reference storageRef = FirebaseStorage.instance
+          .ref()
+          .child('uploads/${DateTime.now().millisecondsSinceEpoch.toString()}');
+      UploadTask uploadTask = storageRef.putData(file.bytes!);
+      TaskSnapshot snapshot = await uploadTask;
 
-        // 업로드된 파일의 다운로드 URL 가져오기
-        downloadUrl = await snapshot.ref.getDownloadURL();
+      // 업로드된 파일의 다운로드 URL 가져오기
+      downloadUrl = await snapshot.ref.getDownloadURL();
 
-        Map<String, dynamic> noticeMap = {
-          'academy': widget.academyInfo['name'], // 학원 이름
-          'contents': contents, // 공지 내용
-          'date': Timestamp.now(), // 현재 시간을 Timestamp로 저장
-          'parentsPhone': parentPhone, // 학부모 전화번호
-          'pushType': 'notice', // 푸시 타입 (예: SMS, 앱 푸시 등)
-          'title': title, // 공지 제목
-          'fileUrl': downloadUrl, // 업로드된 파일의 다운로드 URL
-          'filename': filename,
-        };
+      Map<String, dynamic> noticeMap = {
+        'academy': widget.academyInfo['name'], // 학원 이름
+        'contents': contents, // 공지 내용
+        'date': Timestamp.now(), // 현재 시간을 Timestamp로 저장
+        'parentsPhone': parentPhone, // 학부모 전화번호
+        'pushType': 'notice', // 푸시 타입 (예: SMS, 앱 푸시 등)
+        'title': title, // 공지 제목
+        'fileUrl': downloadUrl, // 업로드된 파일의 다운로드 URL
+        'filename': filename,
+      };
 
-        print(downloadUrl);
+      print(downloadUrl);
 
-        String id = await noticeViewModel.setNotice(noticeMap);
-        await noticeViewModel.getNotice(id);
-        print(id);
-        print(noticeViewModel.notice.toString());
+      String id = await noticeViewModel.setNotice(noticeMap);
+      await noticeViewModel.getNotice(id);
+      print(id);
+      print(noticeViewModel.notice.toString());
 
-        downloadFin = true;
-        // 파일 업로드 및 데이터 저장 완료
-        print('File uploaded and notice added to Firestore!');
-        await showUploadSuccessDialog(context);
-      } else {
-        // 파일 크기가 3MB 초과
-        await showSizeExceedDialog(context);
-        print('File size exceeds 3MB. Please choose a smaller file.');
-
-        downloadFin = false;
-      }
+      downloadFin = true;
+      // 파일 업로드 및 데이터 저장 완료
+      print('File uploaded and notice added to Firestore!');
+      await showUploadSuccessDialog(context);
     } else {
-      // 파일이 선택되지 않은 경우
-      print('No file selected!');
+      // 파일 크기가 3MB 초과
+      await showSizeExceedDialog(context);
+      print('File size exceeds 3MB. Please choose a smaller file.');
+
+      downloadFin = false;
     }
   }
-
-  // 파일 크기 초과 경고 다이얼로그 표시
-
-
-  // 파일 크기 초과 경고 다이얼로그 표시
-
-
-  // 텍스트 컨트롤러 다이얼로그 표시
-
-
-  // submit 확인 다이얼로그
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,11 +122,8 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
                 String title = _controller1.text;
                 String contents = _controller2.text;
                 String parentsPhone = _controller3.text;
-                await _uploadFile(title, contents, parentsPhone);
 
-                if (title == '' ||
-                    contents == '' ||
-                    parentsPhone == '') {
+                if (title == '' || contents == '' || parentsPhone == '') {
                   String err = '';
                   if (title == '') {
                     err = '제목';
@@ -149,13 +133,17 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
                     err = '전화번호';
                   }
                   String ErrorMessage = '$err이 입력되지 않았어요';
+                  if (limitexdFile) {
+                    ErrorMessage = '3M가 이상파일은 첨부할 수 없습니다.';
+                  }
                   downloadFin = false;
                   await showInputDialog(ErrorMessage, context);
                 } else {
                   downloadFin = true;
                 }
 
-                if (downloadFin) {
+                if (downloadFin && !limitexdFile) {
+                  await _uploadFile(title, contents, parentsPhone);
                   await submitSuccessDialog(context);
                   Navigator.pop(context);
                 }
