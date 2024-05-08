@@ -5,6 +5,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
+import 'component/input_dialog.dart';
+import 'component/size_exceed_dialog.dart';
+import 'component/submit_success_dialog.dart';
+import 'component/upload_success_dialog.dart';
+
 class FileUploadScreen extends StatefulWidget {
   final Map<String, String> academyInfo;
 
@@ -21,6 +26,7 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
 
   FilePickerResult? result;
   bool downloadFin = true;
+  bool fileSelected = false;
   String titleErrorMessage = '타이틀이 입력되지 않았어요';
 
   Future<void> _ficFile() async {
@@ -32,12 +38,14 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
     final noticeViewModel = context.read<NoticeViewModel>();
     String downloadUrl = '';
     String filename = '';
+    fileSelected = true;
 
     if (result != null) {
       PlatformFile file = result!.files.first;
 
       if (file.size <= 3 * 1024 * 1024) {
         filename = file.name;
+        fileSelected = false;
 
         // Firebase Storage에 파일 업로드
         Reference storageRef = FirebaseStorage.instance.ref().child(
@@ -69,11 +77,12 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
         downloadFin = true;
         // 파일 업로드 및 데이터 저장 완료
         print('File uploaded and notice added to Firestore!');
-        await _showUploadSuccessDialog();
+        await showUploadSuccessDialog(context);
       } else {
         // 파일 크기가 3MB 초과
-        await _showSizeExceedDialog();
+        await showSizeExceedDialog(context);
         print('File size exceeds 3MB. Please choose a smaller file.');
+
         downloadFin = false;
       }
     } else {
@@ -83,88 +92,16 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
   }
 
   // 파일 크기 초과 경고 다이얼로그 표시
-  Future<void> _showSizeExceedDialog() async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('파일 사이즈가 3mb를 초과했습니다.'),
-          content: const Text('업로드 하려는 파일의 사이즈를 3mb 이하로 선택해주세요.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // 다이얼로그 닫기
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   // 파일 크기 초과 경고 다이얼로그 표시
-  Future<void> _showUploadSuccessDialog() async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('파일 업로드가 완료되었습니다.'),
-          content: const Text('업로드된 파일은 학부모 앱에서 다운이 가능합니다.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // 다이얼로그 닫기
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   // 텍스트 컨트롤러 다이얼로그 표시
-  Future<void> _showInputDialog(String inputError) async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('내용이 작성되지 않았습니다.'),
-          content: Text(inputError),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // 다이얼로그 닫기
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   // submit 확인 다이얼로그
-  Future<void> _submitSuccessDialog() async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('전송이 완료되었습니다.'),
-          content: const Text('이전 화면으로 돌아갑니다.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // 다이얼로그 닫기
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -213,13 +150,13 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
                   }
                   String ErrorMessage = '$err이 입력되지 않았어요';
                   downloadFin = false;
-                  await _showInputDialog(ErrorMessage);
+                  await showInputDialog(ErrorMessage, context);
                 } else {
                   downloadFin = true;
                 }
 
                 if (downloadFin) {
-                  await _submitSuccessDialog();
+                  await submitSuccessDialog(context);
                   Navigator.pop(context);
                 }
               },
