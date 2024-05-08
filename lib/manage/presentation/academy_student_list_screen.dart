@@ -88,7 +88,7 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
 
                         context.push('/notice', extra: data);
                       },
-                      child: Text('공지사항입력'),
+                      child: const Text('공지사항입력'),
                     )
                   ],
                 ),
@@ -188,6 +188,7 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
             alignment: Alignment(
                 Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2),
             child: FloatingActionButton(
+              backgroundColor: const Color(0xff353A3F),
               heroTag: null,
               onPressed: () async {
                 final List<String> columnTitles = [
@@ -219,12 +220,13 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
                   fileName: fileName,
                 );
               },
-              child: Icon(Icons.download),
+              child: const Text('Excel', style: TextStyle(color: Colors.white),),
             ),
           ),
           Align(
             alignment: Alignment.bottomRight,
             child: FloatingActionButton(
+              backgroundColor: const Color(0xff353A3F),
               heroTag: null,
               onPressed: () async {
                 final List<String> columnTitles = [
@@ -253,7 +255,7 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
                 await fileDownload.fileDownload(
                     data: csvdata, fileName: fileName);
               },
-              child: Icon(Icons.download),
+              child: const Text('CSV', style: TextStyle(color: Colors.white),),
             ),
           ),
         ],

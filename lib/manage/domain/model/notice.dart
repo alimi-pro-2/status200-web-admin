@@ -16,6 +16,8 @@ class Notice with _$Notice {
     required String parentsPhone,
     required String pushType,
     required String title,
+    String? fileUrl,
+    String? filename,
   }) = _Notice;
 
   factory Notice.fromJson(Map<String, Object?> json) =>
