@@ -28,7 +28,7 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
   bool limitexdFile = false;
   String titleErrorMessage = '타이틀이 입력되지 않았어요';
 
-  Future<void> _ficFile() async {
+  Future<void> _pickFile() async {
     result = await FilePicker.platform.pickFiles();
     if (result!.files.first.size > 3 * 1024 * 1024) {
       limitexdFile = true;
@@ -107,7 +107,7 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
               decoration: const InputDecoration(labelText: '부모전화번호'),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: _ficFile, child: const Text('파일 선택')),
+            ElevatedButton(onPressed: _pickFile, child: const Text('파일 선택')),
             const SizedBox(
               height: 10,
             ),
