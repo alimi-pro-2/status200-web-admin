@@ -14,8 +14,10 @@ class AdminRepositoryImpl implements AdminRepository {
   Future<void> postAcademyInfo(AcademyRequestDto academyRequestDto) async {
     final data = {
       'name': academyRequestDto.academyName,
-      'master': academyRequestDto.name,
-      'phone': academyRequestDto.number,
+      'master': academyRequestDto.masterName,
+      'phone': academyRequestDto.phoneNumber,
+      'countryCode': academyRequestDto.countryNumber,
+      'createdTime': academyRequestDto.createdTime,
     };
     await _adminDataSource.postAcademyInfo(data);
   }

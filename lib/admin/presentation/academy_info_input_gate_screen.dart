@@ -3,14 +3,15 @@ import 'package:alimipro_mock_data/admin/presentation/view_model/academy_info_in
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class AcademyInfoInputGateScreen extends StatefulWidget {
+import 'country.dart';
 
+class AcademyInfoInputGateScreen extends StatefulWidget {
   final AcademyInfoInputGateViewModel _viewModel;
 
   const AcademyInfoInputGateScreen({
     super.key,
     required AcademyInfoInputGateViewModel academyInfoInputGateViewModel,
-  })  : _viewModel = academyInfoInputGateViewModel;
+  }) : _viewModel = academyInfoInputGateViewModel;
 
   @override
   State<AcademyInfoInputGateScreen> createState() =>
@@ -22,6 +23,7 @@ class _AcademyInfoInputGateScreenState
   final _formController1 = TextEditingController();
   final _formController2 = TextEditingController();
   final _formController3 = TextEditingController();
+  Country _dropdownValue = Country.korea;
 
   @override
   void dispose() {
@@ -53,8 +55,8 @@ class _AcademyInfoInputGateScreenState
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: 400,
-          height: 400,
+          width: 500,
+          height: 500,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -66,6 +68,34 @@ class _AcademyInfoInputGateScreenState
                     'alimi.png',
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Row(
+                children: [
+                  const Text(
+                    '국가',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  DropdownButton<Country>(
+                    value: _dropdownValue,
+                    items: Country.values.map((e) {
+                      return DropdownMenuItem(
+                        value: e,
+                        child: Text(e.name),
+                      );
+                    }).toList(),
+                    onChanged: (Country? value) {
+                      setState(() {
+                        _dropdownValue = value!;
+                      });
+                    },
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 16,
@@ -136,8 +166,9 @@ class _AcademyInfoInputGateScreenState
                       _validateNumber()) {
                     final academyRequestDto = AcademyRequestDto(
                       academyName: _formController1.text,
-                      name: _formController2.text,
-                      number: _formController3.text,
+                      masterName: _formController2.text,
+                      phoneNumber: _formController3.text,
+                      countryNumber: _dropdownValue.number,
                     );
                     await widget._viewModel.postAcademyInfo(academyRequestDto);
                     context.go('/studentList');
