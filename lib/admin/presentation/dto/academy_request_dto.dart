@@ -1,12 +1,15 @@
 class AcademyRequestDto {
 
   final String academyName;
-  final String name;
-  final String number;
+  final String masterName;
+  final String phoneNumber;
+  final String countryNumber;
+  final DateTime createdTime = DateTime.now();
 
-  const AcademyRequestDto({
+  AcademyRequestDto({
     required this.academyName,
-    required this.name,
-    required this.number,
+    required this.masterName,
+    required this.phoneNumber,
+    required this.countryNumber,
   });
 }

@@ -166,8 +166,9 @@ class _AcademyInfoInputGateScreenState
                       _validateNumber()) {
                     final academyRequestDto = AcademyRequestDto(
                       academyName: _formController1.text,
-                      name: _formController2.text,
-                      number: _formController3.text,
+                      masterName: _formController2.text,
+                      phoneNumber: _formController3.text,
+                      countryNumber: _dropdownValue.number,
                     );
                     await widget._viewModel.postAcademyInfo(academyRequestDto);
                     context.go('/studentList');

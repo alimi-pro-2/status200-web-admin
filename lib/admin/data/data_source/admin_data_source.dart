@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AdminDataSource {
 
-  Future<void> postAcademyInfo(Map<String, String> data) async {
-    final String _uid = FirebaseAuth.instance.currentUser!.uid;
-    return await FirebaseFirestore.instance.collection('Academies').doc(_uid).set(data);
+  Future<void> postAcademyInfo(Map<String, dynamic> data) async {
+    final String uid = FirebaseAuth.instance.currentUser!.uid;
+    return await FirebaseFirestore.instance.collection('Academies').doc(uid).set(data);
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getAcademyInfo() async {
-    final String _uid = FirebaseAuth.instance.currentUser!.uid;
-    return await FirebaseFirestore.instance.collection('Academies').doc(_uid).get();
+    final String uid = FirebaseAuth.instance.currentUser!.uid;
+    return await FirebaseFirestore.instance.collection('Academies').doc(uid).get();
   }
 }
