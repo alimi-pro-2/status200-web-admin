@@ -18,11 +18,11 @@ class AcademyInfoInputGateScreen extends StatefulWidget {
       _AcademyInfoInputGateScreenState();
 }
 
-class _AcademyInfoInputGateScreenState
-    extends State<AcademyInfoInputGateScreen> {
+class _AcademyInfoInputGateScreenState extends State<AcademyInfoInputGateScreen> {
   final _formController1 = TextEditingController();
   final _formController2 = TextEditingController();
   final _formController3 = TextEditingController();
+  final _minPhoneNumberLength = 7;
   Country _dropdownValue = Country.korea;
 
   @override
@@ -34,20 +34,12 @@ class _AcademyInfoInputGateScreenState
   }
 
   bool _validateName(TextEditingController controller) {
-    final academyName = controller.text;
-    if (academyName == null || academyName.isEmpty || academyName.trim().isEmpty) {
-      return false;
-    }
-    return true;
+    return controller.text.trim().isNotEmpty;
   }
 
   bool _validateNumber() {
-    final number = _formController3.text;
-    bool isNumber = int.tryParse(number) == null ? false : true;
-    if (number == null || number.isEmpty || number.length < 7 || !isNumber) {
-      return false;
-    }
-    return true;
+    RegExp phonePattern = RegExp('^\\d{$_minPhoneNumberLength,}\$');
+    return phonePattern.hasMatch(_formController3.text);
   }
 
   @override
