@@ -30,7 +30,7 @@ class NoticeRepositoryImpl implements NoticeRepository {
       throw Exception('등록되지 않앗습니다');
     }
 
-    return id!;
+    return id;
   }
 
   const NoticeRepositoryImpl({

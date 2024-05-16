@@ -1,13 +1,12 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:excel/excel.dart';
+import '../../domain/utility/file_downloader.dart';
 
-import '../../domain/utility/Excel_file_download.dart';
-
-class MobileExcelFileDownload implements ExcelFileDownload {
+class MobileExcelFileDownload implements FileDownloader {
   @override
-  Future<void> excelFileDownload({
-    required Excel excel,
+  Future<void> fileDownload({
+    required Uint8List data,
     required String fileName,
   }) async {
     String directoryPath = '/storage/emulated/0/Download';
@@ -17,6 +16,6 @@ class MobileExcelFileDownload implements ExcelFileDownload {
     }
     String filePath = '$directoryPath/$fileName';
     File file = File(filePath);
-    await file.writeAsBytes(excel.encode()!);
+    await file.writeAsBytes(data);
   }
 }

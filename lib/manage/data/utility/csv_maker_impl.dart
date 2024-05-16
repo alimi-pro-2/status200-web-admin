@@ -1,31 +1,30 @@
 import 'dart:typed_data';
 
+import 'package:alimipro_mock_data/manage/data/utility/day_time_seperator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../domain/utility/csv_maker.dart';
 import 'package:csv/csv.dart' as csv;
 
-import '../../domain/utility/day_time_seperater.dart';
-import 'day_time_seperater_impl.dart';
+import '../../domain/utility/file_maker.dart';
+
 import 'dart:convert';
 
-class CsvMakerImpl implements CsvMaker {
+class CsvMakerImpl implements FileMaker {
   @override
-  Future<Uint8List> csvMaker({
-    required List<Map<String, dynamic>> downloadcontents,
+  Future<Uint8List> fileMaker({
+    required List<Map<String, dynamic>> downloadContents,
     required List<String> columnTitles,
     required List<String> columnContentsNames,
-    bool dateTimeSperate = false,
+    bool dayTimeSeparator = false,
   }) async {
     List<List<dynamic>> csvDatas = [columnTitles];
-    DayTimeSeperater dayTimeSeperater = DayTimeSeperaterImpl();
 
-    for (int row = 0; row < downloadcontents.length; row++) {
-      Map<String, dynamic> downloadcontent = downloadcontents[row];
+    for (int row = 0; row < downloadContents.length; row++) {
+      Map<String, dynamic> downloadcontent = downloadContents[row];
       List<dynamic> csvData = [];
       columnContentsNames.map((e) {
-        if (downloadcontent[e] is Timestamp && dateTimeSperate) {
-          final dayTimeSpe = dayTimeSeperater.dayTimeSeperater(downloadcontent[e]);
+        if (downloadcontent[e] is Timestamp && dayTimeSeparator) {
+          final dayTimeSpe = (downloadcontent[e] as Timestamp).dayTimeSeparator();
           csvData.add((dayTimeSpe[0]));
           csvData.add((dayTimeSpe[1]));
         } else {

@@ -3,20 +3,18 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 
-import '../../domain/utility/day_time_seperater.dart';
-import '../../domain/utility/excel_maker.dart';
-import 'day_time_seperater_impl.dart';
+import '../../domain/utility/file_maker.dart';
+import 'day_time_seperator.dart';
 
-class ExcelMakerImpl implements ExcelMaker {
+class ExcelMakerImpl implements FileMaker {
   @override
-  Future<Uint8List> excelMaker(
-      {required List<Map<String, dynamic>> downloadcontents,
+  Future<Uint8List> fileMaker(
+      {required List<Map<String, dynamic>> downloadContents,
       required List<String> columnTitles,
       required List<String> columnContentsNames,
-      bool dateTimeSperate = false}) async {
+      bool dayTimeSeparator = false}) async {
     Excel excel = Excel.createExcel();
     Sheet sheetObject = excel['Sheet1'];
-    DayTimeSeperater dayTimeSeperater = DayTimeSeperaterImpl();
 
     for (int i = 0; i < columnTitles.length; i++) {
       var cell = sheetObject
@@ -24,14 +22,14 @@ class ExcelMakerImpl implements ExcelMaker {
       cell.value = TextCellValue(columnTitles[i]);
     }
 
-    for (int row = 0; row < downloadcontents.length; row++) {
-      final Map<String, dynamic> data = downloadcontents[row];
+    for (int row = 0; row < downloadContents.length; row++) {
+      final Map<String, dynamic> data = downloadContents[row];
 
       List<dynamic> rowData = [];
 
       columnContentsNames.map((e) {
-        if (data[e] is Timestamp && dateTimeSperate) {
-          final dayTimeSpe = dayTimeSeperater.dayTimeSeperater(data[e]);
+        if (data[e] is Timestamp && dayTimeSeparator) {
+          final dayTimeSpe = (data[e] as Timestamp).dayTimeSeparator();
           rowData.add(TextCellValue(dayTimeSpe[0]));
           rowData.add(TextCellValue(dayTimeSpe[1]));
         } else {
@@ -45,6 +43,6 @@ class ExcelMakerImpl implements ExcelMaker {
         cell.value = rowData[col];
       }
     }
-    return Uint8List.fromList(excel.encode()!);;
+    return Uint8List.fromList(excel.encode()!);
   }
 }

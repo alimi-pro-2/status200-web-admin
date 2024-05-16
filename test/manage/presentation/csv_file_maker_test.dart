@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:alimipro_mock_data/manage/data/utility/csv_maker_impl.dart';
-import 'package:alimipro_mock_data/manage/domain/utility/csv_maker.dart';
+import 'package:alimipro_mock_data/manage/domain/utility/file_maker.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('csv', () async {
-    CsvMaker csvMaker = CsvMakerImpl();
+    FileMaker csvMaker = CsvMakerImpl();
     final testList = [
       {
         'academy': '테스터 학원',
@@ -32,11 +33,11 @@ void main() {
 
     final List<String> columnContentsNames = ['name', 'time', 'punchType'];
 
-    final data = await csvMaker.csvMaker(
-      downloadcontents: testList,
+    final data = await csvMaker.fileMaker(
+      downloadContents: testList,
       columnTitles: columnTitles,
       columnContentsNames: columnContentsNames,
-      dateTimeSperate: true,
+      dayTimeSeparator: true,
     );
 
     final csvdata = utf8.decode(data);
