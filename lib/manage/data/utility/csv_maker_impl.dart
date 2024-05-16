@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:alimipro_mock_data/manage/data/utility/day_time_seperater_impl.dart';
+import 'package:alimipro_mock_data/manage/data/utility/day_time_seperator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:csv/csv.dart' as csv;

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 
 import '../../domain/utility/file_maker.dart';
-import 'day_time_seperater_impl.dart';
+import 'day_time_seperator.dart';
 
 class ExcelMakerImpl implements FileMaker {
   @override
