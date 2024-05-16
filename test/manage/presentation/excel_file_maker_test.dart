@@ -1,5 +1,5 @@
 import 'package:alimipro_mock_data/manage/data/utility/excel_maker_impl.dart';
-import 'package:alimipro_mock_data/manage/domain/utility/excel_maker.dart';
+import 'package:alimipro_mock_data/manage/domain/utility/file_maker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -31,13 +31,13 @@ void main() {
 
     final List<String> columnContentsNames = ['name', 'time', 'punchType'];
 
-    ExcelMaker excelMaker = ExcelMakerImpl();
+    FileMaker excelMaker = ExcelMakerImpl();
 
-    final exceldata = await excelMaker.excelMaker(
-      downloadcontents: testList,
+    final exceldata = await excelMaker.fileMaker(
+      downloadContents: testList,
       columnTitles: columnTitles,
       columnContentsNames: columnContentsNames,
-      dateTimeSperate: true,
+      dayTimeSeparator: true,
     );
 
     Excel excelfile = Excel.decodeBytes(exceldata);

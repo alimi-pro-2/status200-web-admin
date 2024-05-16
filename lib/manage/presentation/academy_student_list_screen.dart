@@ -5,22 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../data/utility/csv_maker_impl.dart';
-import '../data/utility/excel_maker_impl.dart';
-
-import '../data/utility/file_doenloader_impl.dart';
-
-import '../domain/utility/csv_maker.dart';
-
-import '../domain/utility/excel_maker.dart';
-import '../domain/utility/file_downloader.dart';
 
 class AcademyStudentListScreen extends StatefulWidget {
   final String _uid = FirebaseAuth.instance.currentUser!.uid;
 
   AcademyStudentListScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<AcademyStudentListScreen> createState() =>
@@ -30,10 +21,6 @@ class AcademyStudentListScreen extends StatefulWidget {
 class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
   bool _isNameAscending = true;
   final textColor = Colors.white;
-
-  ExcelMaker excelMaker = ExcelMakerImpl();
-  FileDownloader fileDownload = FileDownloaderImpl();
-  CsvMaker csvMaker = CsvMakerImpl();
 
   @override
   void initState() {
@@ -191,36 +178,12 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
               backgroundColor: const Color(0xff353A3F),
               heroTag: null,
               onPressed: () async {
-                final List<String> columnTitles = [
-                  '이름',
-                  '출결코드',
-                  '대표 보호자 번호',
-                  '메모',
-                ];
-                final String fileName = '${viewModel.academy.name} 학생명단.xlsx';
-
-                final param =
-                    viewModel.students.map((e) => e.toJson()).toList();
-
-                final List<String> columnContentsNames = [
-                  'name',
-                  'PIN',
-                  'parentsPhone1',
-                  'memo',
-                ];
-                final excelfile = await excelMaker.excelMaker(
-                  downloadcontents: param,
-                  columnTitles: columnTitles,
-                  columnContentsNames: columnContentsNames,
-                  dateTimeSperate: true,
-                );
-
-                await fileDownload.fileDownload(
-                  data: excelfile,
-                  fileName: fileName,
-                );
+                viewModel.excelDownload();
               },
-              child: const Text('Excel', style: TextStyle(color: Colors.white),),
+              child: const Text(
+                'Excel',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
           Align(
@@ -229,33 +192,12 @@ class _AcademyStudentListScreenState extends State<AcademyStudentListScreen> {
               backgroundColor: const Color(0xff353A3F),
               heroTag: null,
               onPressed: () async {
-                final List<String> columnTitles = [
-                  '이름',
-                  '출결코드',
-                  '대표 보호자 번호',
-                  '메모',
-                ];
-                final String fileName = '${viewModel.academy.name} 학생명단.csv';
-
-                final param =
-                    viewModel.students.map((e) => e.toJson()).toList();
-
-                final List<String> columnContentsNames = [
-                  'name',
-                  'PIN',
-                  'parentsPhone1',
-                  'memo',
-                ];
-                final csvdata = await csvMaker.csvMaker(
-                  downloadcontents: param,
-                  columnTitles: columnTitles,
-                  columnContentsNames: columnContentsNames,
-                  dateTimeSperate: true,
-                );
-                await fileDownload.fileDownload(
-                    data: csvdata, fileName: fileName);
+                viewModel.csvDownload();
               },
-              child: const Text('CSV', style: TextStyle(color: Colors.white),),
+              child: const Text(
+                'CSV',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],

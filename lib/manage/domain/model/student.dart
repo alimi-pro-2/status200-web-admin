@@ -1,3 +1,5 @@
+// ignore_for_file: type=lint
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'student.freezed.dart';
